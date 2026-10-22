@@ -317,6 +317,58 @@ p{margin:0}
 #play .top{margin:0}
 #pArena{overflow:hidden;overflow:clip;z-index:0}
 #pGoalCh:empty{display:none}
+/* parent corner: report kept on the device */
+.parent-entry{display:flex;align-items:center;justify-content:center;gap:8px;margin:0 auto 18px;padding:9px 18px;border-radius:999px;background:var(--paper);color:var(--teal-d);font-size:1rem;box-shadow:0 4px 0 var(--line)}
+#parent{background:var(--sky)}
+#parent>:not(.top){margin-left:16px;margin-right:16px}
+.r-head{display:flex;align-items:center;gap:12px;background:var(--paper);border-radius:22px;padding:10px 16px;box-shadow:var(--shadow)}
+.r-head .fig{width:84px;flex:none}
+.r-head small{color:var(--muted);font-weight:700}
+.r-head h2{font-size:1.7rem;color:var(--teal-d)}
+.r-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.r-stat{border-radius:20px;padding:10px 6px;text-align:center;display:flex;flex-direction:column;gap:0}
+.r-stat b{font-size:2rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.r-stat span{font-size:.9rem;font-weight:700}
+.r-stat.teal{background:var(--teal-l);color:var(--teal-d)}
+.r-stat.sun{background:var(--sun-l);color:#7a5800}
+.r-stat.lime{background:var(--lime-l);color:var(--grass-d)}
+.r-card{background:var(--paper);border-radius:22px;padding:14px 16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
+.r-card.warm{background:var(--orange-l)}
+.r-card h3{margin:0;font-size:1.15rem;display:flex;align-items:center;gap:8px}
+.r-n{margin-inline-start:auto;font-size:.9rem;background:var(--tint);color:var(--teal-d);border-radius:999px;padding:1px 10px}
+.r-week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.r-week span{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.85rem;color:var(--muted)}
+.r-week i{width:26px;height:26px;border-radius:50%;background:var(--tint);border:2px solid var(--line)}
+.r-week span.on i{background:var(--grass);border-color:var(--grass-d)}
+.r-week span.now b{color:var(--teal-d)}
+.r-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;direction:rtl}
+.r-grid span{aspect-ratio:1;display:grid;place-items:center;border-radius:12px;background:var(--sky);border:2px solid var(--line);font:700 1.25rem/1 var(--naskh);color:var(--muted)}
+.r-grid span.done{background:var(--lime-l);border-color:var(--lime);color:var(--grass-d)}
+.r-grid span.new{background:var(--sun);border-color:var(--sun-d);color:var(--ink)}
+.r-key{display:flex;flex-wrap:wrap;gap:12px;font-size:.85rem;color:var(--muted)}
+.r-key span{display:flex;align-items:center;gap:5px}
+.r-key i{width:14px;height:14px;border-radius:4px;background:var(--sky);border:2px solid var(--line)}
+.r-key i.done{background:var(--lime-l);border-color:var(--lime)}
+.r-key i.new{background:var(--sun);border-color:var(--sun-d)}
+.r-line{font-size:.95rem}
+.r-hard{display:flex;align-items:center;gap:12px;background:var(--paper);border-radius:16px;padding:8px 12px}
+.r-ch{width:52px;height:52px;flex:none;border-radius:14px;background:var(--orange);color:#fff;display:grid;place-items:center;font:700 1.8rem/1 var(--naskh)}
+.r-hard b{display:block}
+.r-hard small{color:var(--muted);font-size:.9rem}
+.r-tip{font-size:.92rem;color:var(--orange-d);font-weight:700}
+.r-empty{color:var(--muted);font-size:.95rem;list-style:none}
+.r-recent{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.r-recent li{display:flex;gap:10px;align-items:baseline;font-size:.95rem}
+.r-recent li b{min-width:5.2em;color:var(--teal-d)}
+.r-privacy{display:flex;align-items:center;gap:6px;justify-content:center;font-size:.85rem;color:var(--muted);text-align:center;margin-bottom:10px}
+.gate{position:fixed;inset:0;z-index:30;background:rgba(34,51,63,.35);display:grid;place-items:center;padding:16px}
+.gate[hidden]{display:none}
+.gate-box{background:var(--paper);border-radius:24px;padding:18px;width:min(340px,100%);text-align:center;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
+.gate-box small{color:var(--muted);font-weight:700}
+.gate-box h3{margin:0;font-size:1.6rem}
+.gate-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gate-opts button{background:var(--tint);border-radius:16px;padding:12px 0;font-size:1.4rem;font-variant-numeric:tabular-nums;color:var(--teal-d)}
+.gate-x{color:var(--muted);font-size:1rem;padding:6px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.cheerwrap .ico{display:none}}
 </style>
 
@@ -334,6 +386,7 @@ p{margin:0}
   <symbol id="i-game" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="11" rx="5"/><path d="M8 12h3M9.5 10.5v3"/><circle cx="16" cy="12" r="1" fill="currentColor"/></symbol>
   <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
   <symbol id="i-shirt" viewBox="0 0 24 24"><path d="M8 4l4 2 4-2 4 3-2 3-2-1v11H8V9L6 10 4 7z"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M7 16v-5M12 16V7M17 16v-8"/></symbol>
   <symbol id="i-card" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></symbol>
 </svg>
 
@@ -347,6 +400,7 @@ p{margin:0}
     <button class="btn teal" id="makeBtn" type="button"><svg class="ico"><use href="#i-shirt"/></svg><span data-f="اصنعي شخصيتك">اصنع شخصيتك</span></button>
   </div>
   <div class="tip">القراءة مع ماما أو بابا جنب الطفل تثبّت النطق الصحيح</div>
+  <button class="parent-entry" id="parentBtn" type="button"><svg class="ico"><use href="#i-chart"/></svg>ركن الأهل: تقرير التعلّم</button>
 </section>
 
 <section class="screen" id="signup" hidden>
@@ -467,11 +521,32 @@ p{margin:0}
   </div>
 </section>
 
+<section class="screen" id="parent" hidden>
+  <div class="top"><button class="iconbtn" type="button" data-go="home" aria-label="رجوع"><svg class="ico"><use href="#i-back"/></svg></button><span class="ttl">ركن الأهل</span></div>
+  <div class="r-head"><div class="fig" id="rFig"></div><div><small>تقرير هالأسبوع</small><h2 id="rName">طفلك</h2></div></div>
+  <div class="r-stats">
+    <div class="r-stat teal"><b id="rMin">0</b><span>دقيقة تعلّم</span></div>
+    <div class="r-stat sun"><b id="rDays">0</b><span>أيام من ٧</span></div>
+    <div class="r-stat lime"><b id="rStars">0</b><span>نجمة جديدة</span></div>
+  </div>
+  <div class="r-card"><h3>أيام هالأسبوع</h3><div class="r-week" id="rWeek"></div></div>
+  <div class="r-card"><h3>الحروف <span class="r-n" id="rLettersN"></span></h3><div class="r-grid" id="rLetters"></div>
+    <div class="r-key"><span><i class="new"></i>جديد هالأسبوع</span><span><i class="done"></i>عرفه</span><span><i></i>للحين</span></div>
+    <p class="r-line">الحركات: <b id="rVowN"></b> · تسجيلات صوته: <b id="rRec">0</b></p></div>
+  <div class="r-card warm"><h3>يحتاج تدريب</h3><div id="rHard"></div></div>
+  <div class="r-card"><h3>آخر نشاط</h3><ul class="r-recent" id="rRecent"></ul></div>
+  <p class="r-privacy"><svg class="ico"><use href="#i-lock"/></svg>كل هالأرقام محفوظة على هالجهاز بس، وما تطلع لأي مكان.</p>
+</section>
+
+<div class="gate" id="gate" hidden role="dialog" aria-modal="true" aria-labelledby="gateQ">
+  <div class="gate-box"><small>للكبار فقط</small><h3 id="gateQ">كم ٦ × ٧؟</h3><div class="gate-opts" id="gateOpts"></div><button class="gate-x" id="gateClose" type="button">إلغاء</button></div>
+</div>
+
 <section class="screen" id="duck" hidden>
   <div class="top g-top"><button class="iconbtn" type="button" data-go="letter" aria-label="رجوع"><svg class="ico"><use href="#i-back"/></svg></button><span class="ttl">البطة والبركة</span><span class="score" id="dScore" style="margin-inline-start:auto">0 من 5</span></div>
   <div class="pond" id="pond"><div class="pond-world" id="pondWorld"></div><button class="d-goal" id="dGoal" type="button" aria-label="اسمع الحرف"><span data-f="اضغطي على">اضغط على</span><b>ب</b><svg class="ico"><use href="#i-speaker"/></svg></button></div>
   <div class="win" id="dWin" hidden>
-    <div class="pair"><div class="fig cheer" id="dwFig"></div><img id="dwDuck" alt="البطة" src="chars/duck.svg" loading="lazy"></div>
+    <div class="pair"><div class="fig cheer" id="dwFig"></div><img id="dwDuck" alt="البطة" src="art/duck.webp" loading="lazy"></div>
     <div class="stars"><svg class="ico fill"><use href="#i-star"/></svg><svg class="ico fill"><use href="#i-star"/></svg><svg class="ico fill"><use href="#i-star"/></svg></div>
     <div class="big pop sun">وصلت البطة!</div>
     <p id="dWinText">عرفتوا الـ ب من بين الحروف اللي تشبهها</p>
@@ -502,7 +577,7 @@ p{margin:0}
   ];
   /* every letter has its own game: أ catch-the-letter and ب duck pond live here, the other 26 in games.js (loaded on demand) */
   var GAME_UNLOCKED=[]; for(var gi=0;gi<28;gi++) GAME_UNLOCKED.push(gi);
-  var DUCK_SRC="chars/duck.svg";
+  var DUCK_SRC="art/duck.webp";
   /* wardrobe manifest: every image lives in chars/ and loads only when its screen opens */
   var WARDROBE={"boy": {"full": [{"id": "thobe", "name": "ثوب وغترة", "src": "chars/boy_full_thobe.webp", "thumb": "chars/boy_full_thobe_thumb.webp"}, {"id": "jog", "name": "طقم رياضي", "src": "chars/boy_full_jog.webp", "thumb": "chars/boy_full_jog_thumb.webp"}], "body": "chars/boy_body.webp", "top": [{"id": "white", "name": "أبيض", "src": "chars/boy_top_white.webp", "thumb": "chars/boy_top_white_thumb.webp"}, {"id": "red", "name": "أحمر", "src": "chars/boy_top_red.webp", "thumb": "chars/boy_top_red_thumb.webp"}, {"id": "yellow", "name": "أصفر", "src": "chars/boy_top_yellow.webp", "thumb": "chars/boy_top_yellow_thumb.webp"}, {"id": "green", "name": "أخضر", "src": "chars/boy_top_green.webp", "thumb": "chars/boy_top_green_thumb.webp"}, {"id": "sky", "name": "سماوي", "src": "chars/boy_top_sky.webp", "thumb": "chars/boy_top_sky_thumb.webp"}, {"id": "purple", "name": "بنفسجي", "src": "chars/boy_top_purple.webp", "thumb": "chars/boy_top_purple_thumb.webp"}], "bottom": [{"id": "white", "name": "أبيض", "src": "chars/boy_bottom_white.webp", "thumb": "chars/boy_bottom_white_thumb.webp"}, {"id": "navy", "name": "كحلي", "src": "chars/boy_bottom_navy.webp", "thumb": "chars/boy_bottom_navy_thumb.webp"}, {"id": "jeans", "name": "جينز", "src": "chars/boy_bottom_jeans.webp", "thumb": "chars/boy_bottom_jeans_thumb.webp"}, {"id": "khaki", "name": "بيج", "src": "chars/boy_bottom_khaki.webp", "thumb": "chars/boy_bottom_khaki_thumb.webp"}, {"id": "gray", "name": "رمادي", "src": "chars/boy_bottom_gray.webp", "thumb": "chars/boy_bottom_gray_thumb.webp"}]}, "girl": {"full": [{"id": "hijab", "name": "فستان وردي وحجاب", "src": "chars/girl_full_hijab.webp", "thumb": "chars/girl_full_hijab_thumb.webp"}, {"id": "dress2", "name": "فستان النجوم وحجاب", "src": "chars/girl_full_dress2.webp", "thumb": "chars/girl_full_dress2_thumb.webp"}, {"id": "jog", "name": "طقم رياضي", "src": "chars/girl_full_jog.webp", "thumb": "chars/girl_full_jog_thumb.webp"}], "body": "chars/girl_body.webp", "top": [{"id": "white", "name": "أبيض", "src": "chars/girl_top_white.webp", "thumb": "chars/girl_top_white_thumb.webp"}, {"id": "pink", "name": "وردي", "src": "chars/girl_top_pink.webp", "thumb": "chars/girl_top_pink_thumb.webp"}, {"id": "purple", "name": "بنفسجي", "src": "chars/girl_top_purple.webp", "thumb": "chars/girl_top_purple_thumb.webp"}, {"id": "yellow", "name": "أصفر", "src": "chars/girl_top_yellow.webp", "thumb": "chars/girl_top_yellow_thumb.webp"}, {"id": "mint", "name": "نعناعي", "src": "chars/girl_top_mint.webp", "thumb": "chars/girl_top_mint_thumb.webp"}, {"id": "sky", "name": "سماوي", "src": "chars/girl_top_sky.webp", "thumb": "chars/girl_top_sky_thumb.webp"}], "bottom": [{"id": "white", "name": "أبيض", "src": "chars/girl_bottom_white.webp", "thumb": "chars/girl_bottom_white_thumb.webp"}, {"id": "jeans", "name": "جينز", "src": "chars/girl_bottom_jeans.webp", "thumb": "chars/girl_bottom_jeans_thumb.webp"}, {"id": "lilac", "name": "ليلكي", "src": "chars/girl_bottom_lilac.webp", "thumb": "chars/girl_bottom_lilac_thumb.webp"}, {"id": "pinkp", "name": "وردي", "src": "chars/girl_bottom_pinkp.webp", "thumb": "chars/girl_bottom_pinkp_thumb.webp"}, {"id": "navy", "name": "كحلي", "src": "chars/girl_bottom_navy.webp", "thumb": "chars/girl_bottom_navy_thumb.webp"}]}};
   var NAMES={boy:["تميم","راشد","سعود","حمد"],girl:["شيخة","مريم","نورة","لولوة"]};
@@ -529,7 +604,7 @@ p{margin:0}
     ls.forEach(function(src){ var im=document.createElement("img"); im.src=src; im.alt=""; im.decoding="async"; wrap.appendChild(im); });
     el.innerHTML=""; el.appendChild(wrap);
   }
-  function renderAllFigs(){ ["homeFig","mkFig","topFig","walker","lFig","gFig","wFig","suFig","pFig","viFig"].forEach(renderFig); $("topName").textContent=S.name||T("صديقي","صديقتي"); }
+  function renderAllFigs(){ ["homeFig","mkFig","topFig","walker","lFig","gFig","wFig","suFig","pFig","viFig","rFig"].forEach(renderFig); $("topName").textContent=S.name||T("صديقي","صديقتي"); }
   /* speak to a girl as a girl: masculine text stays in the markup, the feminine form sits in data-f */
   function T(m,f){ return S.who==="girl"?f:m; }
   function applyGender(){
@@ -573,7 +648,7 @@ p{margin:0}
   }
 
   /* ---------- screens ---------- */
-  var screens=["home","signup","pay","paid","maker","map","vintro","letter","game","duck","play"], cur=0;
+  var screens=["home","signup","pay","paid","maker","map","vintro","letter","game","duck","play","parent"], cur=0;
   function go(name){
     screens.forEach(function(s){ $(s).hidden = s!==name; });
     if(name==="map") renderMap();
@@ -815,7 +890,7 @@ p{margin:0}
         $("playBtn").disabled=false; $("bothBtn").disabled=false; $("lMsg").textContent=T("تم. اسمع صوتك وقارن.","تم. اسمعي صوتك وقارني.");
         setMood("lFig",""); say("سمعتك!"); sfx.ding();
       };
-      recorder.start();
+      recorder.start(); track("rec");
       $("recBtn").classList.add("on"); $("recLbl").textContent=T("أوقف","أوقفي"); $("lMsg").textContent=T("قل الحرف الحين…","قولي الحرف الحين…");
       setMood("lFig","listen"); say("أنا أسمعك");
       setTimeout(function(){ if(recorder&&recorder.state==="recording") recorder.stop(); },4000);
@@ -826,7 +901,9 @@ p{margin:0}
   $("okBtn").addEventListener("click",function(){
     unlockAudio(); var L=LETTERS[cur];
     if(isV()) return okVowel(L);
+    var hadStar=!!(S.progress[L.id]&&S.progress[L.id].star);
     S.progress[L.id]=S.progress[L.id]||{}; S.progress[L.id].star=true; save();
+    if(!hadStar) track("star",L.id);
     sfx.win(); setMood("lFig","cheer"); say("نجمة لنا!");
     cheer("أحسنت!");
     $("lMsg").textContent="ممتاز! نجمة لك."; $("nextRow").hidden=false;
@@ -839,6 +916,7 @@ p{margin:0}
     if(all) p.vstar=true;
     save(); setMood("lFig","cheer"); setTimeout(function(){ setMood("lFig",""); },1500);
     if(first){
+      track("vstar",L.id);
       sfx.win(); say("نجمة لنا!"); cheer("أحسنت!");
       $("lMsg").textContent=T("عرفت الحركات الثلاث! نجمة لك.","عرفتِ الحركات الثلاث! نجمة لج.");
       $("nextRow").hidden=false; $("gameBtn").hidden=!S.sub; $("gameLock").hidden=S.sub;
@@ -875,7 +953,7 @@ p{margin:0}
     if(window.TG&&TG.ready) return cb(true);
     if(gamesWait){ gamesWait.push(cb); return; }
     gamesWait=[cb];
-    var s=document.createElement("script"); s.src="games.js?v=1";
+    var s=document.createElement("script"); s.src="games.js?v=2";
     s.onload=function(){ TG.init(gameApi); TG.ready=true; var w=gamesWait; gamesWait=null; w.forEach(function(f){ f(true); }); };
     s.onerror=function(){ var w=gamesWait; gamesWait=null; s.remove(); w.forEach(function(f){ f(false); }); };
     document.head.appendChild(s);
@@ -884,7 +962,7 @@ p{margin:0}
     LETTERS:LETTERS, T:T, sfx:sfx, tone:tone, sweep:sweep, noise:noise,
     VOWELS:VOWELS, syl:syl, sylHTML:sylHTML, speakSyl:function(L,k,d){ speakSyl(L,k,d); }, S:function(){ return S; }, save:save,
     speakLetter:function(L){ speakLetter(L); }, tts:function(t){ tts(t); }, unlock:unlockAudio, go:go, renderFig:renderFig,
-    friendName:function(){ return S.name||T("صديقك","صديقتك"); },
+    friendName:function(){ return S.name||T("صديقك","صديقتك"); }, track:function(k,id,x){ track(k,id,x); },
     figHTML:function(){ return '<div class="anim">'+layers().map(function(s){ return '<img src="'+s+'" alt="">'; }).join("")+'</div>'; },
     onWin:function(i){ var L=LETTERS[i]; S.progress[L.id]=S.progress[L.id]||{}; S.progress[L.id].star=true; S.progress[L.id].game=true; save(); }
   };
@@ -918,11 +996,11 @@ p{margin:0}
       setMood("gFig","cheer"); setTimeout(function(){ if(G.on) setMood("gFig",""); },900);
       setTimeout(function(){ b.el.remove(); },300);
       if(G.score>=G.need){ winGame(); }
-    } else { b.el.classList.remove("no"); void b.el.offsetWidth; b.el.classList.add("no"); sfx.no(); }
+    } else { b.el.classList.remove("no"); void b.el.offsetWidth; b.el.classList.add("no"); sfx.no(); track("miss",LETTERS[G.target].id,LETTERS[b.idx].ch); }
   }
   function winGame(){
     G.on=false; var L=LETTERS[G.target];
-    S.progress[L.id]=S.progress[L.id]||{}; S.progress[L.id].star=true; S.progress[L.id].game=true; save();
+    S.progress[L.id]=S.progress[L.id]||{}; S.progress[L.id].star=true; S.progress[L.id].game=true; save(); track("win",L.id);
     $("winText").textContent="صدتوا حرف ال"+L.name+" خمس مرات، "+T("أنت و"+(S.name||"صديقك"),"أنتِ و"+(S.name||"صديقتك"));
     $("win").hidden=false; renderFig("wFig"); sfx.win();
     setTimeout(function(){ speakLetter(L); },700);
@@ -1000,7 +1078,7 @@ p{margin:0}
     var cell=D.rows[r-1][c];
     if(!cell.ok){
       p.classList.remove("no"); void p.offsetWidth; p.classList.add("no"); sfx.no(); tts(nameOf(cell.ch));
-      duckSay("هذي "+cell.ch+"، وين ب؟"); D.miss++;
+      duckSay("هذي "+cell.ch+"، وين ب؟"); D.miss++; track("miss","ba",cell.ch);
       if(D.miss>=2){ var okc=D.rows[r-1].filter(function(z){ return z.ok; })[0], idx=D.rows[r-1].indexOf(okc);
         var hp=$("pondWorld").querySelector('.pad[data-r="'+r+'"][data-c="'+idx+'"]'); if(hp) hp.classList.add("hint"); }
       return;
@@ -1022,7 +1100,7 @@ p{margin:0}
     $("pondWorld").style.transform="translateY("+Math.round(H*0.5-landY)+"px)";
     setTimeout(function(){ hopTo(landX,landY,function(){
       D.on=false; sfx.quack(); setMood("dFriend","cheer");
-      var L=LETTERS[1]; S.progress[L.id]=S.progress[L.id]||{}; S.progress[L.id].star=true; S.progress[L.id].game=true; save();
+      var L=LETTERS[1]; S.progress[L.id]=S.progress[L.id]||{}; S.progress[L.id].star=true; S.progress[L.id].game=true; save(); track("win",L.id);
       setTimeout(function(){
         renderFig("dwFig"); $("dWin").hidden=false; sfx.win(); speakLetter(L);
         $("dWinText").textContent=T("عرفت الـ ب من بين الحروف اللي تشبهها، أنت و","عرفتِ الـ ب من بين الحروف اللي تشبهها، أنتِ و")+(S.name||T("صديقك","صديقتك"));
@@ -1032,6 +1110,83 @@ p{margin:0}
   $("dGoal").addEventListener("click",function(){ unlockAudio(); speakLetter(LETTERS[1]); });
   $("duckAgain").addEventListener("click",function(){ startDuck(); });
   $("duckMap").addEventListener("click",function(){ go("map"); });
+
+  /* ---------- parent report: everything is counted and kept on this device only ---------- */
+  var DAYS_AR=["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"]; var DAY_INI=["ح","ن","ث","ر","خ","ج","س"];
+  function dayKey(d){ d=d||new Date(); return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2); }
+  function LG(){ if(!S.log) S.log={days:{},miss:{},conf:{},ev:[],rec:0,first:dayKey()}; return S.log; }
+  function today(){ var g=LG(), k=dayKey(); return g.days[k]||(g.days[k]={s:0}); }
+  function track(kind,id,extra){
+    try{
+      var g=LG(), t=today(), L=null; for(var i=0;i<LETTERS.length;i++){ if(LETTERS[i].id===id) L=LETTERS[i]; }
+      if(kind==="miss"&&L){ g.miss[id]=(g.miss[id]||0)+1; if(extra&&extra!==L.ch&&extra.length===1){ var ck=L.ch+"|"+extra; g.conf[ck]=(g.conf[ck]||0)+1; } t.m=(t.m||0)+1; }
+      else if(kind==="rec"){ g.rec=(g.rec||0)+1; t.r=(t.r||0)+1; }
+      else if(kind==="star"||kind==="vstar"||kind==="win"||kind==="vwin"){
+        g.ev.push({d:dayKey(),k:kind,id:id}); if(g.ev.length>300) g.ev=g.ev.slice(-300);
+        if(kind==="win"||kind==="vwin") t.g=(t.g||0)+1;
+      }
+      save();
+    }catch(e){}
+  }
+  /* active learning time: counted only while the app is on screen and the child touched it in the last 45 s */
+  var lastAct=0;
+  document.addEventListener("pointerdown",function(){ lastAct=Date.now(); },true);
+  setInterval(function(){
+    if(document.visibilityState!=="visible"||Date.now()-lastAct>45000) return;
+    if(!$("home").hidden||!$("parent").hidden) return;
+    today().s+=15; save();
+  },15000);
+
+  /* the adult check: a times question small children can't answer yet */
+  var gateAns=0;
+  function openGate(){
+    var a=3+Math.floor(Math.random()*7), b=3+Math.floor(Math.random()*7); gateAns=a*b;
+    var opts=[gateAns]; while(opts.length<4){ var x=gateAns+(Math.floor(Math.random()*9)-4)*(Math.random()<.5?1:a); if(x>0&&opts.indexOf(x)<0) opts.push(x); }
+    $("gateQ").textContent="كم "+a+" × "+b+"؟";
+    var box=$("gateOpts"); box.innerHTML="";
+    shuffle(opts).forEach(function(v){ var bt=document.createElement("button"); bt.type="button"; bt.textContent=v;
+      bt.addEventListener("click",function(){ if(v===gateAns){ $("gate").hidden=true; openReport(); } else { $("gate").hidden=true; } }); box.appendChild(bt); });
+    $("gate").hidden=false;
+  }
+  $("parentBtn").addEventListener("click",function(){ unlockAudio(); openGate(); });
+  $("gateClose").addEventListener("click",function(){ $("gate").hidden=true; });
+
+  function lastNDays(n){ var out=[], d=new Date(); for(var i=n-1;i>=0;i--){ var x=new Date(d.getFullYear(),d.getMonth(),d.getDate()-i); out.push(x); } return out; }
+  function nameById(id){ for(var i=0;i<LETTERS.length;i++){ if(LETTERS[i].id===id) return LETTERS[i]; } return null; }
+  function openReport(){
+    var g=LG(), week=lastNDays(7), weekKeys=week.map(dayKey);
+    var secs=0, games=0, activeDays=0;
+    weekKeys.forEach(function(k){ var d=g.days[k]; if(d){ secs+=d.s||0; games+=d.g||0; if((d.s||0)>=60||d.g) activeDays++; } });
+    var newStars=g.ev.filter(function(e){ return e.k==="star"&&weekKeys.indexOf(e.d)>=0; }).map(function(e){ return e.id; });
+    var newV=g.ev.filter(function(e){ return e.k==="vstar"&&weekKeys.indexOf(e.d)>=0; }).map(function(e){ return e.id; });
+    var kid=S.name||T("طفلك","طفلتك");
+    $("rName").textContent=kid; renderFig("rFig");
+    $("rMin").textContent=Math.round(secs/60); $("rDays").textContent=activeDays; $("rStars").textContent=newStars.length+newV.length;
+    /* week dots */
+    $("rWeek").innerHTML=week.map(function(d,i){ var k=weekKeys[i], x=g.days[k], on=x&&((x.s||0)>=60||x.g);
+      return '<span class="'+(on?"on":"")+(i===6?" now":"")+'" title="'+DAYS_AR[d.getDay()]+'"><b>'+DAY_INI[d.getDay()]+'</b><i></i></span>'; }).join("");
+    /* letters grid */
+    $("rLetters").innerHTML=LETTERS.map(function(L){ var p=S.progress[L.id]||{}, cls=p.star?(newStars.indexOf(L.id)>=0?"new":"done"):"";
+      return '<span class="'+cls+'">'+L.ch+'</span>'; }).join("");
+    $("rLettersN").textContent=starCount()+" من 28";
+    $("rVowN").textContent=vStarCount()+" من 28";
+    /* needs practice: most mistakes, with the letters it gets mixed up with */
+    var hard=Object.keys(g.miss).filter(function(id){ return g.miss[id]>=2; }).sort(function(a,b){ return g.miss[b]-g.miss[a]; }).slice(0,3);
+    var hb=$("rHard");
+    if(!hard.length){ hb.innerHTML='<p class="r-empty">'+T("ما في حرف صعب عليه للحين. كمّلوا كذا!","ما في حرف صعب عليها للحين. كمّلوا كذا!")+'</p>'; }
+    else hb.innerHTML=hard.map(function(id){ var L=nameById(id); if(!L) return "";
+      var mix=Object.keys(g.conf).filter(function(k){ return k.indexOf(L.ch+"|")===0; }).sort(function(a,b){ return g.conf[b]-g.conf[a]; }).slice(0,2).map(function(k){ return k.split("|")[1]; });
+      return '<div class="r-hard"><span class="r-ch">'+L.ch+'</span><div><b>حرف ال'+L.name+'</b><small>'+(mix.length?T("يخلط بينه وبين ","تخلط بينه وبين ")+mix.join(" و "):"أخطاء في اللعب: "+g.miss[id])+'</small></div></div>'; }).join("")+
+      '<p class="r-tip">'+T("فكرة: اقعدوا معه دقيقتين، اسمعوا الحرف سوا، وخلوه يرسمه بإصبعه.","فكرة: اقعدوا معها دقيقتين، اسمعوا الحرف سوا، وخلوها ترسمه بإصبعها.")+'</p>';
+    /* recent activity */
+    var lines=g.ev.slice(-6).reverse().map(function(e){ var L=nameById(e.id); if(!L) return "";
+      var dd=e.d.split("-"), day=DAYS_AR[new Date(+dd[0],+dd[1]-1,+dd[2]).getDay()];
+      var txt=e.k==="star"?T("عرف حرف ال","عرفت حرف ال")+L.name:e.k==="vstar"?T("عرف حركات ال","عرفت حركات ال")+L.name:e.k==="vwin"?T("فاز بلعبة حركات ال","فازت بلعبة حركات ال")+L.name:T("فاز بلعبة ال","فازت بلعبة ال")+L.name;
+      return '<li><b>'+(e.d===dayKey()?"اليوم":day)+'</b><span>'+txt+'</span></li>'; }).join("");
+    $("rRecent").innerHTML=lines||'<li class="r-empty">'+T("للحين ما بدأ. أول حرف بيطلع هني.","للحين ما بدأت. أول حرف بيطلع هني.")+'</li>';
+    $("rRec").textContent=g.rec||0;
+    go("parent");
+  }
 
   if("speechSynthesis" in window){ window.speechSynthesis.getVoices(); }
   window.addEventListener("resize",function(){ buildScenes(); if(!$("map").hidden){ POINTS=null; renderMap(); } });

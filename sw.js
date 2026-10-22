@@ -1,6 +1,6 @@
 /* تأسيس: offline cache. The app shell is cached on install; character images and
    sounds are cached the first time each screen asks for them, so the first load stays small. */
-const VERSION = "taasees-v3";
+const VERSION = "taasees-v4";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png"];
 
 self.addEventListener("install", (e) => {

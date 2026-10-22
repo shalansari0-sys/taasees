@@ -107,6 +107,7 @@
     };
     /* the standard "not this one" reply: never says wrong, names the letter that was tapped */
     c.wrong = function (el, ch, x, y) {
+      if (api.track) api.track("miss", L.id, ch);
       el.classList.remove("p-no"); void el.offsetWidth; el.classList.add("p-no");
       api.sfx.no(); api.tts(nameOf(ch));
       var r = el.getBoundingClientRect(), s = stage.getBoundingClientRect();
@@ -147,6 +148,7 @@
     if (!c.alive) return;
     Array.prototype.forEach.call(c.stage.querySelectorAll(".p-say"), function (b) { b.style.opacity = 0; });
     if (def0(c).onWin) def0(c).onWin(c); else api.onWin(c.idx);
+    if (api.track) api.track(c.key === "vowel" ? "vwin" : "win", c.L.id);
     var w = $("pWin"), def = c.def;
     $("pwMascot").innerHTML = TG.art[def.mascot] || "";
     $("pwWord").textContent = def.winWord || "ممتاز!";
@@ -1740,7 +1742,7 @@
     intro: function (c) { c.say(c.T("صيد سمكة الـ س!", "صيدي سمكة الـ س!"), c.W * 0.55, wy - 30); },
     spawn: function (c, ch) {
       var dir = Math.random() < 0.5 ? 1 : -1, col = FC[Math.floor(Math.random() * FC.length)];
-      var el = c.add('<div style="position:absolute;inset:0;transform:' + (dir < 0 ? "scaleX(-1)" : "none") + '">' + fish(col, false) + "</div>" + TG.lbl(ch, 44, "top:20px;left:34px"), "", "width:108px;height:76px;z-index:5", "button");
+      var el = c.add('<div style="position:absolute;inset:0;transform:' + (dir < 0 ? "scaleX(-1)" : "none") + '">' + (TG.art.sinFish ? TG.art.sinFish(col) : fish(col, false)) + "</div>" + TG.lbl(ch, 44, "top:20px;left:34px"), "", "width:108px;height:76px;z-index:5", "button");
       var lane = wy + 50 + Math.random() * (c.H - wy - 170);
       return { el: el, x: dir > 0 ? -110 : c.W + 4, y: lane, vx: dir * c.rnd(40, 56), vy: 0, ph: Math.random() * 6 };
     },
@@ -2388,4 +2390,81 @@
       }, 950);
     }
   }));
+})();
+
+;
+/* تأسيس — the drawn art (Gemini stickers in app/art/*.webp) replaces the first flat SVG drawings.
+   Every sticker is wrapped in an <svg> with the SAME viewBox the old drawing had, so each game keeps
+   its sizes, positions and its querySelector("svg") tricks (flip, spin, tilt) without changes.
+   Drawings that are part of a mechanism (shell lid, mailbox flag, wagon slots, nest spot, giraffe neck)
+   stay as they were. New games can use any sticker with TG.pic(name, "0 0 w h"). */
+(function () {
+  "use strict";
+  var TG = window.TG, A = TG.art;
+  var BASE = "art/";
+  function hueOf(hex) {
+    var m = /^#?([0-9a-f]{6})$/i.exec(hex || ""); if (!m) return null;
+    var n = parseInt(m[1], 16), r = (n >> 16 & 255) / 255, g = (n >> 8 & 255) / 255, b = (n & 255) / 255;
+    var mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn, h = 0;
+    if (!d) return null;
+    if (mx === r) h = ((g - b) / d) % 6; else if (mx === g) h = (b - r) / d + 2; else h = (r - g) / d + 4;
+    return (h * 60 + 360) % 360;
+  }
+  /* recolour a sticker towards a colour the game asked for (balloons per vowel, birds on the wire…) */
+  function tint(col, baseHue) {
+    var h = hueOf(col); if (h == null || baseHue == null) return "";
+    var d = Math.round(h - baseHue); if (Math.abs(d) < 12) return "";
+    return "filter:hue-rotate(" + d + "deg) saturate(1.25)";
+  }
+  TG.pic = function (name, vb, opt) {
+    opt = opt || {};
+    var p = vb.split(" ").map(Number), wh = opt.w ? ' width="' + opt.w + '" height="' + opt.h + '"' : "";
+    return '<svg viewBox="' + vb + '"' + wh + ' aria-hidden="true"><image href="' + BASE + name + '.webp" x="' + p[0] + '" y="' + p[1] + '" width="' + p[2] + '" height="' + p[3] +
+      '" preserveAspectRatio="' + (opt.align || "xMidYMid") + ' meet"' + (opt.style ? ' style="' + opt.style + '"' : "") + "/></svg>";
+  };
+  var P = TG.pic;
+  /* plain swaps: same name, same box */
+  var SWAP = {
+    apple: ["apple", "0 0 100 100"], appleFace: ["appleFace", "0 0 100 100"], basket: ["basket", "0 0 120 84"],
+    date: ["date", "0 0 80 100"], palmFace: ["palmFace", "0 0 120 130"],
+    falconFly: ["falconFly", "0 0 150 110"], falconFace: ["falconFace", "0 0 120 130"],
+    horse: ["horse", "0 0 140 120"], lemon: ["lemon", "0 0 100 80"], lemonFace: ["lemonFace", "0 0 120 110"],
+    ra_robot: ["robot", "-66 -6 312 312"], giftFace: ["giftFace", "0 0 120 130"],
+    ball: ["ball", "0 0 100 100"], ballFace: ["ballFace", "0 0 120 120"], birdFace: ["birdFace", "0 0 100 100"],
+    kha_sheep: ["sheep", "0 0 120 104"], kha_sheepFace: ["sheepFace", "0 0 120 104"],
+    sin_fishFace: ["fishFace", "0 0 120 84"], sin_bucket: ["bucket", "0 0 100 96"],
+    butterfly: ["butterfly", "0 0 120 100"], butterflyFace: ["butterflyFace", "0 0 120 100"],
+    jim_camel: ["camel", "0 0 170 150"], jim_camelFace: ["camelFace", "0 0 130 130"], jim_coin: ["coin", "0 0 80 80"],
+    dal_dallah: ["dallah", "0 0 124 156"], dal_dallahFace: ["dallahFace", "-16 0 156 156"], dal_cup: ["cup", "0 0 100 84"],
+    envelopeFace: ["envelopeFace", "0 0 110 80"],
+    dhal_kernel: ["kernel", "0 0 80 92"], dhal_pop: ["popcorn", "0 0 90 84"], dhal_cob: ["cob", "-15 0 140 140"],
+    zay_giraffe: ["giraffe", "-25 0 230 230"], tha_fox: ["fox", "0 0 120 132"],
+    can: ["can", "0 0 130 100"], flowerFace: ["flowerFace", "0 0 120 140"], bushFace: ["bushFace", "0 0 130 110"],
+    handFace: ["handFace", "0 0 120 140"], frog: ["frog", "0 0 140 120"], frogFace: ["frogFace", "0 0 140 120"],
+    sunFace: ["sunFace", "0 0 120 120"], diver: ["diver", "0 0 120 110"], diverFace: ["diverFace", "0 0 120 110"],
+    dhow: ["dhow", "0 0 200 130"], jar: ["jar", "0 0 120 110"], balloonFace: ["balloonFace", "0 0 100 150"],
+    crate: ["crate", "0 0 100 100"], engine: ["engine", "0 0 150 112"], trainFace: ["trainFace", "0 0 150 120"],
+    drumFace: ["drumFace", "0 0 120 130"]
+  };
+  Object.keys(SWAP).forEach(function (k) { if (k in A) A[k] = P(SWAP[k][0], SWAP[k][1]); });
+  /* coloured families: the game passes a colour, the sticker is turned towards it */
+  if (A.bird) A.bird = function (col) { return P("bird", "0 0 100 100", { style: tint(col, 28) }); };
+  if (A.bug) A.bug = function (col) { return P("bug", "0 0 100 100", { style: tint(col, 2) }); };
+  if (A.flower) A.flower = function (col) { return P("flower", "0 0 100 180", { align: "xMidYMax", style: tint(col, 345) }); };
+  if (A.envelope) A.envelope = function (col) { return P("envelope", "0 0 110 80", { style: tint(col, 42) }); };
+  if (A.balloon) A.balloon = function (fill) { return P("balloon", "0 0 100 150", { style: tint(fill, 356) }); };
+  if (A.drum) A.drum = function (col) { return P("drum", "0 0 120 130", { style: tint(col, 28) }); };
+  TG.art.sinFish = function (col) { return P("fish", "0 0 120 84", { style: tint(col, 28) }); };
+  /* scenery drawn to a size */
+  if (A.tree) A.tree = function (w, h) { return P("tree", "0 0 " + w + " " + h, { w: w, h: h, align: "xMidYMax" }); };
+  if (A.palm) A.palm = function (w, h) { return P("palm", "0 0 " + w + " " + h, { w: w, h: h, align: "xMidYMax" }); };
+  /* warm the browser cache so nothing pops in mid-game */
+  TG.preloadArt = function () {
+    ["apple", "appleFace", "basket", "tree", "date", "palm", "palmFace", "falconFly", "falconFace", "horse", "lemon", "lemonFace", "robot", "giftFace",
+      "ball", "ballFace", "bird", "birdFace", "sheep", "sheepFace", "fish", "fishFace", "bucket", "butterfly", "butterflyFace", "flower", "camel", "camelFace",
+      "coin", "dallah", "dallahFace", "cup", "envelope", "envelopeFace", "kernel", "popcorn", "cob", "giraffe", "fox", "can", "flowerFace", "bushFace",
+      "handFace", "frog", "frogFace", "bug", "sunFace", "diver", "diverFace", "dhow", "jar", "balloon", "balloonFace", "crate", "engine", "trainFace",
+      "drum", "drumFace"].forEach(function (n) { var i = new Image(); i.src = BASE + n + ".webp"; });
+  };
+  TG.preloadArt();
 })();
