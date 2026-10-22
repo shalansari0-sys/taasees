@@ -1,0 +1,1046 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="تأسيس: نتعلم نقرأ من أول حرف، مع ماما وبابا.">
+<title>تأسيس</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#11808F">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="تأسيس">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;600;700;800&family=Noto+Naskh+Arabic:wght@500;700&display=swap">
+<style>
+/* Layout: one-screen kids web app. Home → (demo sign-up → demo payment) → dress-up maker → journey map → letter card → catch-the-letter game.
+   World: AdaptedMind-like flat storybook scenery (teal sky band, pink hills, scalloped lime bushes, light meadow), orange call-to-action,
+   chunky rounded display type with a white stroke ("أحسنت!"). Characters keep their black cartoon outlines. Single light look by the founder's pin. */
+:root{
+  --sky:#EAF7F9; --paper:#FFFFFF; --ink:#22333F; --muted:#5D6F7C; --line:#D5E7EA; --tint:#E2F3F5;
+  --teal:#11808F; --teal-d:#0B5E69; --teal-l:#BFE8EE;
+  --orange:#F2693B; --orange-d:#C94E24; --orange-l:#FFE3D7;
+  --lime:#A3C93A; --lime-d:#78982A; --lime-l:#E7F2C3; --meadow:#F2F8DF;
+  --grass:#46831A; --grass-d:#2F5E0E;   /* lime family, deep enough for white text */
+  --pink:#F3A6B8; --pink-d:#E07F98; --pink-l:#FCE3EA;
+  --sun:#FFCF3D; --sun-d:#D49B00; --sun-l:#FFF3C9;
+  --purple:#7E57C2; --purple-d:#5B3A99; --purple-l:#ECE4FA;
+  --sand:#F7E9C6;
+  --v-f:#E5532B; --v-d:#0E7C8A; --v-k:#7E57C2;   /* vowel marks: fatha, damma, kasra */
+  --shadow:0 10px 22px rgba(19,118,132,.16);
+  --ease:cubic-bezier(.34,1.56,.64,1); --quick:150ms; --std:240ms; --slow:420ms;
+  --display:"Baloo Bhaijaan 2","Segoe UI",Tahoma,system-ui,sans-serif;
+  --naskh:"Noto Naskh Arabic","Amiri","Times New Roman",serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{margin:0;background:var(--sky);color:var(--ink);font-family:var(--display);font-weight:500;font-size:17px;line-height:1.55;overflow:hidden}
+::selection{background:var(--sun-l);color:var(--ink)}
+button{font-family:var(--display);font-weight:700;cursor:pointer;border:0;color:var(--ink);background:none}
+button:focus-visible,input:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:14px}
+.top button:focus-visible{outline-color:var(--sun)}
+h1,h2{margin:0;line-height:1.1;font-weight:800}
+p{margin:0}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;gap:12px;padding:0 0 18px;overflow:auto;scrollbar-width:thin;scrollbar-color:var(--teal-l) transparent}
+.screen[hidden]{display:none!important}
+/* content screens: bands and scenery run edge to edge, everything else sits on a 16px gutter (560px column on wide screens) */
+:is(#signup,#pay,#paid,#maker,#letter)>:not(.top):not(.scene){margin-left:16px;margin-right:16px}
+.ico{width:1.25em;height:1.25em;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.ico.fill{fill:currentColor;stroke:none}
+
+/* the "Great Job" voice: chunky rounded type with a white stroke */
+.pop{font-weight:800;color:var(--lime);-webkit-text-stroke:8px #fff;paint-order:stroke fill;text-shadow:0 6px 0 var(--grass),0 10px 18px rgba(47,94,14,.22)}
+/* sun-yellow words get a thin orange-brown contour outside the white stroke, so they read on light skies */
+.pop.sun{color:var(--sun);text-shadow:2px 0 0 var(--orange-d),-2px 0 0 var(--orange-d),0 2px 0 var(--orange-d),0 -2px 0 var(--orange-d),1.5px 1.5px 0 var(--orange-d),-1.5px 1.5px 0 var(--orange-d),1.5px -1.5px 0 var(--orange-d),-1.5px -1.5px 0 var(--orange-d),0 7px 0 var(--orange-d),0 12px 18px rgba(201,78,36,.25)}
+.pop.orange{color:var(--orange)}
+
+/* teal header band */
+.top{display:flex;align-items:center;gap:10px;min-height:58px;padding:8px 16px;background:var(--teal);color:#fff;position:sticky;top:0;z-index:4;flex:none}
+.top .ttl{font-size:1.25rem;font-weight:800}
+.top .cnt{margin-inline-start:auto;color:#fff;opacity:.95;font-weight:700;background:var(--teal-d);border-radius:999px;padding:2px 12px;font-size:.95rem}
+.iconbtn{width:42px;height:42px;border-radius:14px;background:rgba(255,255,255,.18);display:grid;place-items:center;color:#fff;transition:transform var(--quick) var(--ease)}
+.iconbtn:active{transform:scale(.92)}
+.iconbtn .ico{transform:scaleX(-1)}
+.btn{border-radius:18px;padding:13px 26px;font-size:1.3rem;font-weight:800;color:#fff;background:var(--orange);box-shadow:0 5px 0 var(--orange-d),0 10px 18px rgba(201,78,36,.22);display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform var(--quick) var(--ease),box-shadow var(--quick)}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--orange-d)}
+.btn.teal{background:var(--teal);box-shadow:0 5px 0 var(--teal-d),0 10px 18px rgba(19,118,132,.2)}
+.btn.teal:active{box-shadow:0 1px 0 var(--teal-d)}
+.btn.lime{background:var(--grass);box-shadow:0 5px 0 var(--grass-d),0 10px 18px rgba(47,94,14,.22)}
+.btn.lime:active{box-shadow:0 1px 0 var(--grass-d)}
+.btn.ghost{background:var(--paper);color:var(--ink);box-shadow:0 5px 0 var(--line)}
+.demo{background:var(--sun-l);border:2px dashed var(--sun-d);border-radius:14px;padding:6px 12px;font-size:.9rem;font-weight:700;color:#8a6400;text-align:center}
+
+/* storybook scenery: pink hills, scalloped white edge, lime bushes, meadow */
+.scene{position:relative;flex:none;height:120px;pointer-events:none}
+.scene.foot{margin-top:auto;margin-bottom:-18px;height:110px}
+.scene svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+
+/* figure (the companion) */
+.fig{position:relative;aspect-ratio:1;width:100%;max-width:100%}
+.fig img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.fig .anim{position:absolute;inset:0;transform-origin:50% 100%;animation:bob 2.6s ease-in-out infinite}
+.fig.listen .anim{animation:lean 1.2s ease-in-out infinite}
+.fig.cheer .anim{animation:cheer .55s var(--ease) 3}
+@keyframes bob{50%{transform:translateY(-4px)}}
+@keyframes lean{50%{transform:rotate(-3deg) translateY(-3px)}}
+@keyframes cheer{30%{transform:translateY(-24px) scale(1.05)}60%{transform:translateY(0) scale(.97)}}
+
+/* home */
+#home{padding:0;gap:0;background:var(--sky)}
+.home-top{background:var(--teal);border-radius:0 0 36px 36px;padding:34px 16px 20px;text-align:center;color:#fff;display:flex;flex-direction:column;align-items:center;gap:2px}
+.logo{font-size:4.6rem;line-height:1;color:var(--sun);-webkit-text-stroke:8px #fff;paint-order:stroke fill;text-shadow:0 6px 0 rgba(0,0,0,.12)}
+.tag{font-size:1.1rem;font-weight:600;max-width:22em}
+.home-stage{position:relative;display:flex;justify-content:center;align-items:flex-end;flex:1;min-height:300px;overflow:hidden}
+.sunball{position:absolute;top:22px;inset-inline-start:22px;width:64px;height:64px;border-radius:50%;background:var(--sun);box-shadow:0 0 0 10px rgba(255,207,61,.25)}
+.cloud{position:absolute;height:26px;border-radius:999px;background:#fff;box-shadow:0 4px 0 var(--teal-l)}
+.cloud::before,.cloud::after{content:"";position:absolute;bottom:8px;border-radius:50%;background:#fff}
+.cloud::before{width:44%;aspect-ratio:1;inset-inline-start:16%}
+.cloud::after{width:32%;aspect-ratio:1;inset-inline-start:52%}
+.cloud.c1{top:40px;inset-inline-end:28px;width:110px;animation:drift 18s ease-in-out infinite alternate}
+.cloud.c2{top:118px;inset-inline-start:34%;width:80px;animation:drift 22s ease-in-out infinite alternate-reverse}
+@keyframes drift{to{transform:translateX(26px)}}
+.home-stage .scene{position:absolute;left:0;right:0;bottom:0;height:150px;margin:0}
+.home-fig{position:relative;width:min(70vw,310px);margin-bottom:30px}
+.home-btns{display:flex;flex-direction:column;gap:12px;width:min(100% - 32px,340px);margin:0 auto;padding:16px 0 10px}
+.home-btns .btn{width:100%}
+.tip{background:var(--paper);border-radius:16px;padding:8px 16px;font-size:.95rem;max-width:26em;margin:4px auto 18px;text-align:center;box-shadow:var(--shadow)}
+
+/* sign-up & payment (demo) */
+.form{display:flex;flex-direction:column;gap:10px;background:var(--paper);border-radius:22px;padding:16px;box-shadow:var(--shadow)}
+.form label{display:flex;flex-direction:column;gap:4px;font-size:.95rem;font-weight:700}
+.form input{border:2px solid var(--line);border-radius:14px;padding:10px 14px;font:600 1.05rem var(--display);color:var(--ink);background:var(--sky);caret-color:var(--teal);min-width:0;width:100%}
+.form input::placeholder{color:var(--muted);font-weight:500}
+.form .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.plan{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--paper);border:3px solid var(--sun);border-radius:18px;padding:12px 14px;box-shadow:0 5px 0 var(--sun-l)}
+.plan b{font-size:1.1rem}
+.plan .price{font-size:1.3rem;font-weight:800;color:var(--orange-d);font-variant-numeric:tabular-nums;white-space:nowrap}
+.trial{background:var(--lime-l);border-radius:14px;padding:6px 12px;font-size:1rem;font-weight:800;color:var(--grass-d);text-align:center}
+.peek{display:flex;align-items:flex-end;justify-content:center;gap:4px;margin-top:-4px}
+.peek .fig{width:130px}
+.peek .bubble{margin-bottom:80px}
+.ok-big{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;padding:30px 0 0}
+.ok-big .ring{width:96px;height:96px;border-radius:50%;background:var(--grass);color:#fff;display:grid;place-items:center;box-shadow:0 6px 0 var(--grass-d)}
+.ok-big .ring .ico{width:52px;height:52px;stroke-width:3.2}
+.ok-big h2{font-size:2.6rem}
+.ok-big .fig{width:min(52vw,220px)}
+
+/* maker (dress-up) */
+.who{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+.who button{border-radius:16px;padding:10px;background:var(--paper);box-shadow:0 4px 0 var(--line);font-size:1.1rem}
+.who button[aria-pressed="true"]{background:var(--teal);color:#fff;box-shadow:0 4px 0 var(--teal-d)}
+.stage{position:relative;border-radius:24px;overflow:hidden;background:linear-gradient(180deg,var(--teal-l),var(--sky) 60%);display:flex;justify-content:center;align-items:flex-end;min-height:290px;flex:none}
+.stage .scene{position:absolute;left:0;right:0;bottom:0;height:120px;margin:0}
+.stage .fig{position:relative;width:min(64vw,290px);margin-bottom:18px}
+.tabs{display:flex;gap:6px}
+.tabs button{flex:1;border-radius:14px;padding:9px 6px;background:var(--paper);box-shadow:0 4px 0 var(--line);font-size:1rem}
+.tabs button[aria-selected="true"]{background:var(--teal);color:#fff;box-shadow:0 4px 0 var(--teal-d)}
+.rack{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:10px}
+.item{position:relative;aspect-ratio:1;border-radius:18px;background:var(--paper);border:3px solid transparent;box-shadow:0 4px 0 var(--line);overflow:hidden;padding:4px;display:grid;place-items:center;transition:transform var(--quick) var(--ease),border-color var(--quick)}
+.item img{width:100%;height:100%;object-fit:contain;display:block}
+.item:active{transform:scale(.94)}
+.item[aria-pressed="true"]{border-color:var(--teal);box-shadow:0 4px 0 var(--teal-d);background:var(--tint)}
+.item.none{font-size:.95rem;font-weight:800;color:var(--muted)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border-radius:999px;padding:7px 14px;background:var(--paper);box-shadow:0 3px 0 var(--line);font-size:1rem;transition:transform var(--quick) var(--ease)}
+.chip[aria-pressed="true"]{background:var(--teal);color:#fff;box-shadow:0 3px 0 var(--teal-d)}
+.namebox input{width:100%;border:2px solid var(--line);border-radius:16px;padding:10px 14px;font:700 1.1rem var(--display);color:var(--ink);background:var(--paper);caret-color:var(--teal)}
+#maker .btn{position:sticky;bottom:12px;align-self:center;margin-top:4px;z-index:3;min-width:min(100%,280px)}
+
+/* map */
+#map{padding:0;gap:0;background:var(--meadow)}
+#map .top{margin:0}
+/* wide screens: the teal band runs edge to edge while the content stays 560px wide */
+@media (min-width:592px){.top{padding-left:calc(50vw - 280px);padding-right:calc(50vw - 280px)}:is(#signup,#pay,#paid,#maker,#letter)>:not(.top):not(.scene){margin-left:calc(50vw - 280px);margin-right:calc(50vw - 280px)}}
+.petbtn{display:flex;align-items:center;gap:8px;background:var(--teal-d);border-radius:999px;padding:3px 12px 3px 6px;font-weight:800;color:#fff}
+.petbtn .fig{width:38px}
+.trail{position:relative;flex:none;width:min(100%,460px);margin:0 auto}
+.trail svg.road{position:absolute;inset:0;width:100%;height:100%}
+.stop{position:absolute;width:66px;height:66px;margin:-33px 0 0 -33px;border-radius:50%;background:var(--paper);border:4px solid var(--teal);display:grid;place-items:center;font:700 2rem/1 var(--naskh);color:var(--ink);box-shadow:0 5px 0 var(--teal-d);transition:transform var(--quick) var(--ease)}
+.stop:active{transform:scale(.93)}
+.stop.done{background:var(--sun);border-color:#fff;box-shadow:0 5px 0 var(--sun-d)}
+.stop .star{display:none;position:absolute;top:-10px;right:-8px;width:26px;height:26px;color:var(--orange);background:var(--paper);border-radius:50%;padding:3px}
+.stop.done .star{display:block}
+.stop.now{border-color:var(--orange);box-shadow:0 5px 0 var(--orange-d);animation:ring 1.6s ease-out infinite}
+@keyframes ring{0%{outline:0 solid rgba(242,105,59,.45)}100%{outline:16px solid rgba(242,105,59,0)}}
+.walker{position:absolute;width:100px;margin:-124px 0 0 -50px;pointer-events:none;transition:left var(--slow) var(--ease),top var(--slow) var(--ease)}
+.bush,.hill{position:absolute;pointer-events:none}
+
+/* letter */
+#letter{background:linear-gradient(180deg,var(--sky) 0 70%,var(--meadow) 70%)}
+.lesson{display:grid;grid-template-columns:1fr 120px;gap:10px;align-items:end;margin-top:6px}
+.card{background:var(--paper);border-radius:26px;padding:12px 12px 16px;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;min-width:0;box-shadow:0 6px 0 var(--teal-l)}
+.glyph{font:700 clamp(6rem,28vw,9.5rem)/1.4 var(--naskh);color:var(--teal-d);padding-top:.06em;margin-bottom:-.12em}
+.name{font-size:1.5rem;font-weight:800}
+.hint{color:var(--muted);font-size:.95rem}
+.side{display:flex;flex-direction:column;align-items:center;gap:6px}
+.side .fig{width:120px}
+.bubble{background:var(--paper);border-radius:14px;padding:4px 10px;font-size:.85rem;font-weight:800;position:relative;min-height:2em;text-align:center;box-shadow:var(--shadow)}
+.bubble::after{content:"";position:absolute;bottom:-7px;left:50%;width:14px;height:14px;background:var(--paper);transform:translateX(-50%) rotate(45deg)}
+.acts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.act{border-radius:18px;padding:12px 10px;font-size:1.15rem;font-weight:800;color:#fff;display:flex;flex-direction:column;align-items:center;gap:3px;transition:transform var(--quick) var(--ease),opacity var(--quick)}
+.act small{font-size:.85rem;font-weight:700}
+.act:active{transform:translateY(3px)}
+.act.listen{background:var(--teal);box-shadow:0 5px 0 var(--teal-d)}
+.act.rec{background:var(--orange-d);box-shadow:0 5px 0 #96381A}
+.act.rec.on{animation:pulse 1s infinite}
+.act.play{background:var(--purple);box-shadow:0 5px 0 var(--purple-d)}
+.act.both{background:var(--grass);box-shadow:0 5px 0 var(--grass-d)}
+.act[disabled]{opacity:.4}
+@keyframes pulse{50%{transform:scale(1.03)}}
+.parent{background:var(--sun-l);border-radius:20px;padding:10px 14px;display:flex;flex-direction:column;gap:8px;box-shadow:0 5px 0 #F3DD8A}
+.parent .lbl{font-weight:800;font-size:1rem}
+.parent .pr{display:flex;gap:10px}
+.parent .pr button{flex:1;border-radius:14px;padding:10px;font-size:1.1rem;font-weight:800;background:var(--paper);display:inline-flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 4px 0 #EBD58C;transition:transform var(--quick) var(--ease)}
+.parent .pr button:active{transform:translateY(3px)}
+.parent .ok{color:var(--grass)}.parent .again{color:var(--orange-d)}
+.next{display:flex;gap:10px}
+.next .btn{flex:1;font-size:1.2rem;padding:12px 14px}
+.msg{text-align:center;color:var(--muted);font-size:.95rem;min-height:1.5em;font-weight:700}
+/* celebration: sun-ray burst in the sky colours, the companion jumps in big, the word lands on top */
+.cheerwrap{position:fixed;inset:0;display:grid;place-items:center;pointer-events:none;z-index:9;animation:cw 1.9s ease forwards}
+.cheerwrap .rays{position:absolute;width:150vmax;height:150vmax;left:50%;top:50%;margin:-75vmax 0 0 -75vmax;border-radius:50%;background:repeating-conic-gradient(var(--teal-l) 0 9deg,var(--sky) 9deg 18deg);-webkit-mask:radial-gradient(circle,#000 0 30%,transparent 62%);mask:radial-gradient(circle,#000 0 30%,transparent 62%);animation:spin 1.9s linear}
+.cheerwrap .disc{position:absolute;width:min(78vw,330px);aspect-ratio:1;border-radius:50%;background:var(--sun-l);box-shadow:0 0 0 14px rgba(255,255,255,.8)}
+.cheerwrap .fig{position:absolute;width:min(64vw,270px);animation:jumpin .9s var(--ease) both}
+.cheerwrap .fig .anim{animation:cheer .55s var(--ease) .6s 2}
+.cheerwrap .word{position:absolute;z-index:2;font-size:4.6rem;top:calc(50% - min(39vw,165px) - 1.6rem);animation:burst 1.9s var(--ease) forwards}
+.cheerwrap .ico{position:absolute;z-index:1;width:52px;height:52px;color:var(--sun);filter:drop-shadow(0 3px 0 var(--orange-d));animation:fly 1.3s ease-out .2s both}
+@keyframes cw{0%{opacity:0}10%{opacity:1}85%{opacity:1}100%{opacity:0}}
+@keyframes spin{to{transform:rotate(40deg)}}
+@keyframes jumpin{0%{transform:translateY(60px) scale(.6);opacity:0}100%{transform:none;opacity:1}}
+@keyframes burst{0%{transform:scale(.2);opacity:0}25%{transform:scale(1.15);opacity:1}45%{transform:scale(1)}100%{transform:scale(1)}}
+@keyframes fly{0%{transform:translate(0,0) scale(.3);opacity:0}30%{opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(1);opacity:0}}
+.lock{background:var(--sun-l);border-radius:16px;padding:10px 14px;display:flex;align-items:center;gap:10px;font-weight:800;box-shadow:0 5px 0 #F3DD8A}
+.lock .btn{font-size:1.2rem;padding:8px 16px;margin-inline-start:auto}
+
+/* game */
+#game{padding:0;gap:0;background:linear-gradient(180deg,var(--teal-l) 0%,var(--sky) 60%)}
+#game .top{margin:0}
+.g-top .goal{margin-inline-start:auto;background:var(--paper);color:var(--ink);border-radius:999px;padding:3px 14px;font-weight:800;display:flex;align-items:center;gap:6px}
+.g-top .goal b{font:700 1.9rem/1.25 var(--naskh);color:var(--orange-d);min-width:1ch;text-align:center}
+.g-top .score{font-variant-numeric:tabular-nums;color:#fff;font-weight:800}
+.arena{position:relative;flex:1;overflow:hidden}
+.arena .scene{position:absolute;left:0;right:0;bottom:0;height:130px;margin:0}
+.orb{position:absolute;left:0;top:0;width:78px;height:78px;border-radius:50%;background:rgba(255,255,255,.95);border:4px solid #fff;box-shadow:0 8px 18px rgba(19,118,132,.18), inset 0 -7px 0 var(--teal-l);display:grid;place-items:center;font:700 2.5rem/1 var(--naskh);color:var(--ink);user-select:none;will-change:transform;touch-action:manipulation;z-index:2}
+.orb{animation:orbin .45s ease-out}
+.orb.pop{animation:popout .3s ease-out forwards}
+@keyframes orbin{from{opacity:0}}
+.orb.no{animation:wob .35s ease}
+@keyframes popout{to{transform:scale(1.6);opacity:0}}
+@keyframes wob{25%{margin-left:-6px}75%{margin-left:6px}}
+.g-msg{position:absolute;top:14px;left:0;right:0;text-align:center;font-weight:800;font-size:1.15rem;color:var(--teal-d);pointer-events:none;transition:opacity var(--std);z-index:3}
+.g-fig{position:absolute;bottom:40px;right:10px;width:130px;pointer-events:none;z-index:3}
+.win{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(234,247,249,.97);text-align:center;padding:20px;z-index:5}
+.win .fig{width:170px}
+.win .stars{display:flex;gap:6px;color:var(--sun)}
+.win .stars .ico{width:44px;height:44px;filter:drop-shadow(0 3px 0 var(--sun-d))}
+.win .big{font-size:3.4rem}
+.win .btn{font-size:1.2rem;padding:12px 22px}
+/* lessons switch on the map */
+.seg{display:flex;background:var(--teal-d);border-radius:999px;padding:3px;margin-inline:auto;flex:none}
+.seg button{color:#fff;border-radius:999px;padding:3px 12px;font-size:1rem;font-weight:800;white-space:nowrap}
+.seg button[aria-selected="true"]{background:var(--paper);color:var(--teal-d)}
+.top .cnt{display:flex;align-items:center;gap:4px;white-space:nowrap;flex:none}
+@media (max-width:430px){.petbtn span{display:none}.petbtn{padding:3px}}
+.top .cnt .ico{width:1.05em;height:1.05em;color:var(--sun)}
+.petbtn span{max-width:5.5em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stop .vdots{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);display:flex;gap:3px}
+.stop .vdots i{width:8px;height:8px;border-radius:50%;background:var(--line)}
+.stop .vdots i.on.f{background:var(--v-f)}.stop .vdots i.on.d{background:var(--v-d)}.stop .vdots i.on.k{background:var(--v-k)}
+.stop .lk{position:absolute;top:-8px;left:-8px;width:24px;height:24px;padding:4px;border-radius:50%;background:var(--paper);color:var(--muted);box-shadow:0 2px 0 var(--line)}
+.vmode .stop span:first-child{margin-top:-8px}
+/* a letter with its vowel: the mark is drawn in its own colour, the letter in ink (two stacked copies) */
+.gl{position:relative;display:inline-block}
+.gl-b{position:absolute;inset:0;color:var(--ink)}
+.glyph.v{color:var(--ink)}
+.vrow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.vchip{position:relative;border-radius:18px;background:var(--paper);box-shadow:0 4px 0 var(--line);padding:2px 6px 8px;display:flex;flex-direction:column;align-items:center;gap:0;border:3px solid transparent;transition:transform var(--quick) var(--ease)}
+.vchip:active{transform:scale(.95)}
+.vchip .gl{font:700 2.6rem/1.5 var(--naskh)}
+.vchip small{font-size:.95rem;font-weight:800}
+.vchip[aria-pressed="true"]{border-color:var(--teal);background:var(--tint);box-shadow:0 4px 0 var(--teal-d)}
+.vchip .ok{position:absolute;top:-8px;left:-8px;width:26px;height:26px;padding:4px;border-radius:50%;background:var(--grass);color:#fff;display:none}
+.vchip.done .ok{display:block}
+.vhint{font-weight:700}
+#vintro .vi-head{display:flex;align-items:flex-end;justify-content:center;gap:6px;margin-top:6px}
+#vintro .vi-head .fig{width:120px}
+#vintro .vi-head .bubble{margin-bottom:70px;font-size:.95rem;max-width:14em}
+.vi-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.vi-card{border-radius:22px;background:var(--paper);box-shadow:0 5px 0 var(--line);padding:6px 6px 12px;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;transition:transform var(--quick) var(--ease)}
+.vi-card:active{transform:scale(.96)}
+.vi-card .gl{font:700 3.6rem/1.55 var(--naskh)}
+.vi-card b{font-size:1.15rem}
+.vi-card small{font-size:.85rem;font-weight:700;color:var(--muted);line-height:1.35}
+.vi-card .ico{color:var(--teal);margin-top:2px}
+#viGo{align-self:center;min-width:min(100%,260px)}
+.stop .gm{position:absolute;bottom:-10px;left:-10px;width:28px;height:28px;padding:5px;border-radius:50%;color:#fff;background:var(--orange);box-shadow:0 2px 0 var(--orange-d)}
+
+/* duck game (ب): the duckling hops across the pond on the lily pad that carries the letter */
+#duck{padding:0;gap:0;background:var(--sky)}
+#duck .top{margin:0}
+.pond{position:relative;flex:1;overflow:hidden;overflow:clip;background:
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='70'%3E%3Cg fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' opacity='.7'%3E%3Cpath d='M10 20q10-8 20 0t20 0'/%3E%3Cpath d='M80 52q10-8 20 0t20 0'/%3E%3C/g%3E%3C/svg%3E"),
+  linear-gradient(180deg,#CDEFF6,#9FDCE8);animation:water 9s linear infinite}
+@keyframes water{to{background-position:140px 0,0 0}}
+.pond-world{position:absolute;left:0;right:0;top:0;height:100%;transition:transform .7s cubic-bezier(.22,1,.36,1)}
+.pond .far{position:absolute;left:0;right:0;height:170px;margin:0;background:linear-gradient(var(--sky),var(--sky)) top/100% 70% no-repeat}
+.pond .far::before{content:"";position:absolute;left:0;right:0;bottom:calc(100% - 1px);height:900px;background:var(--sky)}
+.pad{position:absolute;width:104px;height:88px;margin:-44px 0 0 -52px;border-radius:50%;display:grid;place-items:center;touch-action:manipulation;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 104 88'%3E%3Cpath d='M52 6a47 39 0 1 0 30 9L56 44z' fill='%23fff'/%3E%3Cpath d='M52 10a43 35 0 1 0 27 8L56 44z' fill='%236DBB3C'/%3E%3Cpath d='M56 44 28 26M56 44 22 52M56 44l10 34M56 44 88 60' stroke='%234E9A28' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat;
+  filter:drop-shadow(0 6px 4px rgba(11,94,105,.22));transition:transform var(--std) var(--ease),opacity var(--std)}
+.pad b{width:58px;height:58px;border-radius:50%;background:#fff;display:grid;place-items:center;font:700 2.2rem/1.6 var(--naskh);color:var(--ink);box-shadow:0 3px 0 rgba(78,154,40,.5)}
+.pad b{transition:transform .35s var(--ease)}
+.pad.later{opacity:.85;pointer-events:none}
+.pad.later b{transform:scale(0)}
+.d-goal{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:4;display:flex;align-items:center;gap:8px;background:var(--paper);border-radius:999px;padding:2px 14px;font-size:1.05rem;font-weight:800;box-shadow:var(--shadow);white-space:nowrap}
+.d-goal b{font:700 2.2rem/1.35 var(--naskh);color:var(--orange-d)}
+.d-goal .ico{color:var(--teal)}
+.top .ttl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.g-top .score{white-space:nowrap}
+.pad.gone{opacity:0;transform:scale(.6);pointer-events:none}
+.pad.under{pointer-events:none;transform:scale(.94)}
+.pad.no{animation:padwob .4s ease}
+.pad.hint b{animation:glow 1.2s ease-in-out infinite}
+@keyframes padwob{25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+@keyframes glow{50%{box-shadow:0 0 0 8px rgba(255,207,61,.75),0 3px 0 rgba(78,154,40,.5)}}
+.ripple{position:absolute;width:130px;height:50px;margin:-25px 0 0 -65px;border:3px solid #fff;border-radius:50%;pointer-events:none;animation:ripple .8s ease-out forwards}
+@keyframes ripple{from{transform:scale(.5);opacity:.9}to{transform:scale(1.3);opacity:0}}
+.ducky{position:absolute;left:0;top:0;width:112px;height:118px;pointer-events:none;z-index:2;will-change:transform}
+.ducky img{width:100%;height:100%;object-fit:contain;display:block}
+.pond .friend{position:absolute;width:116px;pointer-events:none}
+.d-say{position:absolute;z-index:3;background:var(--paper);border-radius:14px;padding:4px 12px;font-size:.95rem;font-weight:800;box-shadow:var(--shadow);pointer-events:none;white-space:nowrap;transform:translate(-50%,-100%);transition:opacity var(--std)}
+#dWin .pair,#pWin .pair{display:flex;align-items:flex-end;justify-content:center;gap:0}
+#dWin .pair img,.pw-mascot{width:120px}
+.pw-mascot svg{width:100%;height:auto;display:block}
+#dWin .fig,#pWin .fig{width:150px}
+#play{padding:0;gap:0;background:var(--sky)}
+#play .top{margin:0}
+#pArena{overflow:hidden;overflow:clip;z-index:0}
+#pGoalCh:empty{display:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.cheerwrap .ico{display:none}}
+</style>
+
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+  <symbol id="i-speaker" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a4 4 0 0 1 0 6"/><path d="M18.5 6.5a8 8 0 0 1 0 11"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 5v14l11-7z"/></symbol>
+  <symbol id="i-both" viewBox="0 0 24 24"><path d="M4 8h12l-3-3"/><path d="M20 16H8l3 3"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></symbol>
+  <symbol id="i-redo" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 5v6h-6"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></symbol>
+  <symbol id="i-game" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="11" rx="5"/><path d="M8 12h3M9.5 10.5v3"/><circle cx="16" cy="12" r="1" fill="currentColor"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-shirt" viewBox="0 0 24 24"><path d="M8 4l4 2 4-2 4 3-2 3-2-1v11H8V9L6 10 4 7z"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18"/></symbol>
+</svg>
+
+<div dir="rtl" lang="ar">
+
+<section class="screen" id="home">
+  <div class="home-top"><div class="logo">تأسيس</div><p class="tag">نتعلم نقرأ من أول حرف، مع ماما وبابا</p></div>
+  <div class="home-stage"><div class="sunball"></div><div class="cloud c1"></div><div class="cloud c2"></div><div class="scene"></div><div class="fig home-fig" id="homeFig"></div></div>
+  <div class="home-btns">
+    <button class="btn" id="startBtn" type="button"><span data-f="ابدئي الحروف">ابدأ الحروف</span></button>
+    <button class="btn teal" id="makeBtn" type="button"><svg class="ico"><use href="#i-shirt"/></svg><span data-f="اصنعي شخصيتك">اصنع شخصيتك</span></button>
+  </div>
+  <div class="tip">القراءة مع ماما أو بابا جنب الطفل تثبّت النطق الصحيح</div>
+</section>
+
+<section class="screen" id="signup" hidden>
+  <div class="top"><button class="iconbtn" type="button" data-go="home" aria-label="رجوع"><svg class="ico"><use href="#i-back"/></svg></button><span class="ttl">حساب الأهل</span></div>
+  <div class="demo">نسخة تجريبية للعرض: ما ينحفظ شي وما ينرسل لأحد</div>
+  <form class="form" id="signupForm">
+    <label>اسم ولي الأمر<input id="suName" type="text" placeholder="مثال: أم تميم" autocomplete="off"></label>
+    <label>رقم الجوال أو الإيميل<input id="suContact" type="text" placeholder="مثال: 5555 5555" autocomplete="off"></label>
+    <label>اسم الطفل<input id="suChild" type="text" placeholder="مثال: تميم" autocomplete="off"></label>
+    <button class="btn" type="submit">التالي</button>
+  </form>
+  <div class="peek"><div class="bubble">ماما أو بابا يسجلون لي</div><div class="fig" id="suFig"></div></div>
+  <div class="scene foot"></div>
+</section>
+
+<section class="screen" id="pay" hidden>
+  <div class="top"><button class="iconbtn" type="button" data-go="signup" aria-label="رجوع"><svg class="ico"><use href="#i-back"/></svg></button><span class="ttl">الاشتراك</span></div>
+  <div class="demo">دفع تجريبي للعرض: بطاقة وهمية، ما ينخصم شي</div>
+  <div class="plan"><div><b>باقة تأسيس</b><br><small>الحركات، الألعاب، وتلبيس الشخصية</small></div><div class="price">30 ر.ق / شهر</div></div>
+  <div class="trial">أول 7 أيام مجاناً</div>
+  <form class="form" id="payForm">
+    <label>رقم البطاقة (تجريبي)<input id="payCard" type="text" value="4242 4242 4242 4242" readonly></label>
+    <div class="two">
+      <label>تاريخ الانتهاء<input id="payExp" type="text" value="12/28" readonly></label>
+      <label>رمز الأمان<input id="payCvc" type="text" value="123" readonly></label>
+    </div>
+    <button class="btn" type="submit"><svg class="ico"><use href="#i-card"/></svg>ابدأ التجربة المجانية</button>
+  </form>
+  <div class="scene foot"></div>
+</section>
+
+<section class="screen" id="paid" hidden>
+  <div class="ok-big">
+    <h2 class="pop sun">تم الاشتراك!</h2>
+    <div class="fig cheer" id="pFig"></div>
+    <p>الحين نصنع شخصيتك ونلبّسها</p>
+    <button class="btn" id="toMaker" type="button">يلا نصنعها</button>
+  </div>
+  <div class="scene foot"></div>
+</section>
+
+<section class="screen" id="maker" hidden>
+  <div class="top"><button class="iconbtn" type="button" data-go="home" aria-label="رجوع"><svg class="ico"><use href="#i-back"/></svg></button><span class="ttl" data-f="اصنعي شخصيتك">اصنع شخصيتك</span></div>
+  <div class="who"><button type="button" id="whoBoy" aria-pressed="true">ولد</button><button type="button" id="whoGirl" aria-pressed="false">بنت</button></div>
+  <div class="stage"><div class="scene"></div><div class="fig" id="mkFig"></div></div>
+  <div class="tabs" role="tablist">
+    <button type="button" role="tab" data-tab="full" aria-selected="true">لبس كامل</button>
+    <button type="button" role="tab" data-tab="top" aria-selected="false">قميص</button>
+    <button type="button" role="tab" data-tab="bottom" aria-selected="false">بنطلون</button>
+  </div>
+  <div class="rack" id="rack"></div>
+  <div class="chips" id="cName"></div>
+  <div class="namebox"><input id="nameIn" type="text" maxlength="14" placeholder="أو اكتبوا اسم ثاني" autocomplete="off"></div>
+  <button class="btn" id="goBtn" type="button">يلا نبدأ</button>
+</section>
+
+<section class="screen" id="map" hidden>
+  <div class="top"><button class="petbtn" id="editPet" type="button" aria-label="شخصيتي"><div class="fig" id="topFig"></div><span id="topName">صديقي</span></button><div class="seg" role="tablist" aria-label="الدروس"><button type="button" role="tab" id="modeL" aria-selected="true">الحروف</button><button type="button" role="tab" id="modeV" aria-selected="false">الحركات</button></div><span class="cnt" id="mapStars"><svg class="ico fill"><use href="#i-star"/></svg><span id="mapStarsN">0</span></span></div>
+  <div class="trail" id="trail"><svg class="road" id="road" viewBox="0 0 400 2500" preserveAspectRatio="none" aria-hidden="true"><path id="roadEdge" d="" fill="none" stroke="#fff" stroke-width="60" stroke-linecap="round"/><path id="roadPath" d="" fill="none" stroke="var(--sand)" stroke-width="46" stroke-linecap="round"/><path id="roadDash" d="" fill="none" stroke="#fff" stroke-width="6" stroke-dasharray="1 24" stroke-linecap="round"/></svg><div class="fig walker" id="walker"></div></div>
+</section>
+
+<section class="screen" id="vintro" hidden>
+  <div class="top"><button class="iconbtn" type="button" data-go="map" aria-label="رجوع"><svg class="ico"><use href="#i-back"/></svg></button><span class="ttl">الحركات</span></div>
+  <div class="vi-head"><div class="fig" id="viFig"></div><div class="bubble" id="viSay"></div></div>
+  <div class="vi-cards" id="viCards"></div>
+  <button class="btn" id="viGo" type="button">يلا نبدأ</button>
+  <div class="scene foot"></div>
+</section>
+
+<section class="screen" id="letter" hidden>
+  <div class="top"><button class="iconbtn" type="button" data-go="map" aria-label="رجوع"><svg class="ico"><use href="#i-back"/></svg></button><span class="ttl" id="lTitle">الحرف</span><span class="cnt" id="lCount"></span></div>
+  <div class="lesson">
+    <div class="card"><div class="glyph" id="lGlyph">أ</div><div class="name" id="lName">ألف</div><div class="hint" id="lHint" data-f="اسمعي، وبعدين قوليها بصوتك">اسمع، وبعدين قلها بصوتك</div><div class="hint vhint" id="vHint" hidden></div></div>
+    <div class="side"><div class="bubble" id="petSay">اسمع معي</div><div class="fig" id="lFig"></div></div>
+  </div>
+  <div class="vrow" id="vRow" hidden></div>
+  <div class="acts">
+    <button class="act listen" id="listenBtn" type="button"><svg class="ico"><use href="#i-speaker"/></svg><span data-f="اسمعي">اسمع</span><small>الحرف</small></button>
+    <button class="act rec" id="recBtn" type="button"><svg class="ico"><use href="#i-mic"/></svg><span id="recLbl">سجّل صوتي</span><small data-f="اضغطي وقولي الحرف">اضغط وقل الحرف</small></button>
+    <button class="act play" id="playBtn" type="button" disabled><svg class="ico fill"><use href="#i-play"/></svg><span data-f="اسمعي صوتي">اسمع صوتي</span><small>اللي سجلته</small></button>
+    <button class="act both" id="bothBtn" type="button" disabled><svg class="ico"><use href="#i-both"/></svg><span data-f="قارني">قارن</span><small>الحرف ثم صوتي</small></button>
+  </div>
+  <div class="msg" id="lMsg"></div>
+  <div class="parent">
+    <div class="lbl">للأهل: نطقها صح؟</div>
+    <div class="pr"><button class="ok" id="okBtn" type="button"><svg class="ico"><use href="#i-check"/></svg>صح</button><button class="again" id="againBtn" type="button"><svg class="ico"><use href="#i-redo"/></svg>أعد</button></div>
+  </div>
+  <div class="next" id="nextRow" hidden>
+    <button class="btn" id="gameBtn" type="button" hidden><svg class="ico"><use href="#i-game"/></svg>العب</button>
+    <button class="btn lime" id="nextBtn" type="button">الحرف التالي</button>
+  </div>
+  <div class="lock" id="gameLock" hidden><svg class="ico"><use href="#i-lock"/></svg><span id="lockTxt">لعبة الحرف مع الباقة</span><button class="btn" id="lockBtn" type="button">اشتراك</button></div>
+</section>
+
+<section class="screen" id="game" hidden>
+  <div class="top g-top"><button class="iconbtn" type="button" data-go="letter" aria-label="رجوع"><svg class="ico"><use href="#i-back"/></svg></button><span class="ttl">صيد الحرف</span><span class="score" id="gScore">0 من 5</span><span class="goal"><span data-f="اضغطي على">اضغط على</span> <b id="gTarget">أ</b></span></div>
+  <div class="arena" id="arena"><div class="scene"></div><div class="g-msg" id="gMsg" data-f="وين الحرف؟ اضغطي عليه لما يطلع">وين الحرف؟ اضغط عليه لما يطلع</div><div class="fig g-fig" id="gFig"></div></div>
+  <div class="win" id="win" hidden>
+    <div class="fig cheer" id="wFig"></div>
+    <div class="stars"><svg class="ico fill"><use href="#i-star"/></svg><svg class="ico fill"><use href="#i-star"/></svg><svg class="ico fill"><use href="#i-star"/></svg></div>
+    <div class="big pop sun">ممتاز!</div>
+    <p id="winText">صدتوا كل الحروف</p>
+    <button class="btn" id="againGame" type="button">العب مرة ثانية</button>
+    <button class="btn ghost" id="toMap" type="button">رجوع للحروف</button>
+  </div>
+</section>
+
+<section class="screen" id="play" hidden>
+  <div class="top g-top"><button class="iconbtn" type="button" data-go="letter" aria-label="رجوع"><svg class="ico"><use href="#i-back"/></svg></button><span class="ttl" id="pTitle"></span><span class="score" id="pScore" style="margin-inline-start:auto"></span></div>
+  <div class="arena" id="pArena"><div class="p-stage" id="pStage"></div><button class="d-goal" id="pGoal" type="button" aria-label="اسمع الحرف"><span id="pGoalTxt"></span><b id="pGoalCh"></b><svg class="ico"><use href="#i-speaker"/></svg></button></div>
+  <div class="win" id="pWin" hidden>
+    <div class="pair"><div class="fig cheer" id="pwFig"></div><div class="pw-mascot" id="pwMascot"></div></div>
+    <div class="stars"><svg class="ico fill"><use href="#i-star"/></svg><svg class="ico fill"><use href="#i-star"/></svg><svg class="ico fill"><use href="#i-star"/></svg></div>
+    <div class="big pop sun" id="pwWord">ممتاز!</div>
+    <p id="pwText"></p>
+    <button class="btn" id="pAgain" type="button">العب مرة ثانية</button>
+    <button class="btn ghost" id="pMap" type="button">رجوع للحروف</button>
+  </div>
+</section>
+
+<section class="screen" id="duck" hidden>
+  <div class="top g-top"><button class="iconbtn" type="button" data-go="letter" aria-label="رجوع"><svg class="ico"><use href="#i-back"/></svg></button><span class="ttl">البطة والبركة</span><span class="score" id="dScore" style="margin-inline-start:auto">0 من 5</span></div>
+  <div class="pond" id="pond"><div class="pond-world" id="pondWorld"></div><button class="d-goal" id="dGoal" type="button" aria-label="اسمع الحرف"><span data-f="اضغطي على">اضغط على</span><b>ب</b><svg class="ico"><use href="#i-speaker"/></svg></button></div>
+  <div class="win" id="dWin" hidden>
+    <div class="pair"><div class="fig cheer" id="dwFig"></div><img id="dwDuck" alt="البطة" src="chars/duck.svg" loading="lazy"></div>
+    <div class="stars"><svg class="ico fill"><use href="#i-star"/></svg><svg class="ico fill"><use href="#i-star"/></svg><svg class="ico fill"><use href="#i-star"/></svg></div>
+    <div class="big pop sun">وصلت البطة!</div>
+    <p id="dWinText">عرفتوا الـ ب من بين الحروف اللي تشبهها</p>
+    <button class="btn" id="duckAgain" type="button">العب مرة ثانية</button>
+    <button class="btn ghost" id="duckMap" type="button">رجوع للحروف</button>
+  </div>
+</section>
+
+</div>
+
+<script>
+(function(){
+  var LETTERS=[
+    {id:"alif",ch:"أ",name:"ألف"},{id:"ba",ch:"ب",name:"باء"},{id:"ta",ch:"ت",name:"تاء"},{id:"tha",ch:"ث",name:"ثاء"},
+    {id:"jim",ch:"ج",name:"جيم"},{id:"ha",ch:"ح",name:"حاء"},{id:"kha",ch:"خ",name:"خاء"},{id:"dal",ch:"د",name:"دال"},
+    {id:"dhal",ch:"ذ",name:"ذال"},{id:"ra",ch:"ر",name:"راء"},{id:"zay",ch:"ز",name:"زاي"},{id:"sin",ch:"س",name:"سين"},
+    {id:"shin",ch:"ش",name:"شين"},{id:"sad",ch:"ص",name:"صاد"},{id:"dad",ch:"ض",name:"ضاد"},{id:"tah",ch:"ط",name:"طاء"},
+    {id:"zah",ch:"ظ",name:"ظاء"},{id:"ain",ch:"ع",name:"عين"},{id:"ghain",ch:"غ",name:"غين"},{id:"fa",ch:"ف",name:"فاء"},
+    {id:"qaf",ch:"ق",name:"قاف"},{id:"kaf",ch:"ك",name:"كاف"},{id:"lam",ch:"ل",name:"لام"},{id:"mim",ch:"م",name:"ميم"},
+    {id:"nun",ch:"ن",name:"نون"},{id:"heh",ch:"ه",name:"هاء"},{id:"waw",ch:"و",name:"واو"},{id:"ya",ch:"ي",name:"ياء"}
+  ];
+  var AUDIO_BASE=null;          /* when the ElevenLabs files are in: "audio/" -> audio/letters/<id>.mp3 and audio/v/<id>-<f|d|k>.mp3 */
+  /* the three short vowels; colours match the marks everywhere */
+  var VOWELS=[
+    {k:"f",mark:"\u064E",name:"فتحة",col:"var(--v-f)",tip:["الفتحة فوق الحرف: افتح فمك","الفتحة فوق الحرف: افتحي فمك"],mouth:["افتح فمك","افتحي فمك"]},
+    {k:"d",mark:"\u064F",name:"ضمة",col:"var(--v-d)",tip:["الضمة فوق الحرف: ضم شفايفك","الضمة فوق الحرف: ضمي شفايفك"],mouth:["ضم شفايفك","ضمي شفايفك"]},
+    {k:"k",mark:"\u0650",name:"كسرة",col:"var(--v-k)",tip:["الكسرة تحت الحرف: ابتسم","الكسرة تحت الحرف: ابتسمي"],mouth:["ابتسم","ابتسمي"]}
+  ];
+  /* every letter has its own game: أ catch-the-letter and ب duck pond live here, the other 26 in games.js (loaded on demand) */
+  var GAME_UNLOCKED=[]; for(var gi=0;gi<28;gi++) GAME_UNLOCKED.push(gi);
+  var DUCK_SRC="chars/duck.svg";
+  /* wardrobe manifest: every image lives in chars/ and loads only when its screen opens */
+  var WARDROBE={"boy": {"full": [{"id": "thobe", "name": "ثوب وغترة", "src": "chars/boy_full_thobe.webp", "thumb": "chars/boy_full_thobe_thumb.webp"}, {"id": "jog", "name": "طقم رياضي", "src": "chars/boy_full_jog.webp", "thumb": "chars/boy_full_jog_thumb.webp"}], "body": "chars/boy_body.webp", "top": [{"id": "white", "name": "أبيض", "src": "chars/boy_top_white.webp", "thumb": "chars/boy_top_white_thumb.webp"}, {"id": "red", "name": "أحمر", "src": "chars/boy_top_red.webp", "thumb": "chars/boy_top_red_thumb.webp"}, {"id": "yellow", "name": "أصفر", "src": "chars/boy_top_yellow.webp", "thumb": "chars/boy_top_yellow_thumb.webp"}, {"id": "green", "name": "أخضر", "src": "chars/boy_top_green.webp", "thumb": "chars/boy_top_green_thumb.webp"}, {"id": "sky", "name": "سماوي", "src": "chars/boy_top_sky.webp", "thumb": "chars/boy_top_sky_thumb.webp"}, {"id": "purple", "name": "بنفسجي", "src": "chars/boy_top_purple.webp", "thumb": "chars/boy_top_purple_thumb.webp"}], "bottom": [{"id": "white", "name": "أبيض", "src": "chars/boy_bottom_white.webp", "thumb": "chars/boy_bottom_white_thumb.webp"}, {"id": "navy", "name": "كحلي", "src": "chars/boy_bottom_navy.webp", "thumb": "chars/boy_bottom_navy_thumb.webp"}, {"id": "jeans", "name": "جينز", "src": "chars/boy_bottom_jeans.webp", "thumb": "chars/boy_bottom_jeans_thumb.webp"}, {"id": "khaki", "name": "بيج", "src": "chars/boy_bottom_khaki.webp", "thumb": "chars/boy_bottom_khaki_thumb.webp"}, {"id": "gray", "name": "رمادي", "src": "chars/boy_bottom_gray.webp", "thumb": "chars/boy_bottom_gray_thumb.webp"}]}, "girl": {"full": [{"id": "hijab", "name": "فستان وردي وحجاب", "src": "chars/girl_full_hijab.webp", "thumb": "chars/girl_full_hijab_thumb.webp"}, {"id": "dress2", "name": "فستان النجوم وحجاب", "src": "chars/girl_full_dress2.webp", "thumb": "chars/girl_full_dress2_thumb.webp"}, {"id": "jog", "name": "طقم رياضي", "src": "chars/girl_full_jog.webp", "thumb": "chars/girl_full_jog_thumb.webp"}], "body": "chars/girl_body.webp", "top": [{"id": "white", "name": "أبيض", "src": "chars/girl_top_white.webp", "thumb": "chars/girl_top_white_thumb.webp"}, {"id": "pink", "name": "وردي", "src": "chars/girl_top_pink.webp", "thumb": "chars/girl_top_pink_thumb.webp"}, {"id": "purple", "name": "بنفسجي", "src": "chars/girl_top_purple.webp", "thumb": "chars/girl_top_purple_thumb.webp"}, {"id": "yellow", "name": "أصفر", "src": "chars/girl_top_yellow.webp", "thumb": "chars/girl_top_yellow_thumb.webp"}, {"id": "mint", "name": "نعناعي", "src": "chars/girl_top_mint.webp", "thumb": "chars/girl_top_mint_thumb.webp"}, {"id": "sky", "name": "سماوي", "src": "chars/girl_top_sky.webp", "thumb": "chars/girl_top_sky_thumb.webp"}], "bottom": [{"id": "white", "name": "أبيض", "src": "chars/girl_bottom_white.webp", "thumb": "chars/girl_bottom_white_thumb.webp"}, {"id": "jeans", "name": "جينز", "src": "chars/girl_bottom_jeans.webp", "thumb": "chars/girl_bottom_jeans_thumb.webp"}, {"id": "lilac", "name": "ليلكي", "src": "chars/girl_bottom_lilac.webp", "thumb": "chars/girl_bottom_lilac_thumb.webp"}, {"id": "pinkp", "name": "وردي", "src": "chars/girl_bottom_pinkp.webp", "thumb": "chars/girl_bottom_pinkp_thumb.webp"}, {"id": "navy", "name": "كحلي", "src": "chars/girl_bottom_navy.webp", "thumb": "chars/girl_bottom_navy_thumb.webp"}]}};
+  var NAMES={boy:["تميم","راشد","سعود","حمد"],girl:["شيخة","مريم","نورة","لولوة"]};
+  var KEY="taasees-v3";
+  var S={sub:false,who:"boy",full:null,top:null,bottom:null,name:"",progress:{},made:false,mode:"l",vIntro:false};
+  try{ var saved=JSON.parse(localStorage.getItem(KEY)||"null"); if(saved&&saved.progress){ S=saved; } }catch(e){}
+  function save(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} }
+  function $(id){ return document.getElementById(id); }
+
+  /* ---------- figure rendering (lazy images) ---------- */
+  function pick(list,id){ return (list||[]).filter(function(x){ return x.id===id; })[0]; }
+  function layers(){
+    var w=WARDROBE[S.who]; if(!w) w=WARDROBE.boy;
+    if(S.full){ var f=pick(w.full,S.full); if(f) return [f.src]; }
+    if(!w.body) return [w.base||(w.full[0]&&w.full[0].src)];
+    var b=pick(w.bottom,S.bottom)||pick(w.bottom,"white"), t=pick(w.top,S.top)||pick(w.top,"white");
+    return [w.body,b.src,t.src];
+  }
+  function renderFig(id){
+    var el=$(id); if(!el) return; var ls=layers();
+    var key=ls.join("|"); if(el.getAttribute("data-key")===key) return;
+    el.setAttribute("data-key",key);
+    var wrap=document.createElement("div"); wrap.className="anim";
+    ls.forEach(function(src){ var im=document.createElement("img"); im.src=src; im.alt=""; im.decoding="async"; wrap.appendChild(im); });
+    el.innerHTML=""; el.appendChild(wrap);
+  }
+  function renderAllFigs(){ ["homeFig","mkFig","topFig","walker","lFig","gFig","wFig","suFig","pFig","viFig"].forEach(renderFig); $("topName").textContent=S.name||T("صديقي","صديقتي"); }
+  /* speak to a girl as a girl: masculine text stays in the markup, the feminine form sits in data-f */
+  function T(m,f){ return S.who==="girl"?f:m; }
+  function applyGender(){
+    Array.prototype.forEach.call(document.querySelectorAll("[data-f]"),function(el){
+      if(!el.hasAttribute("data-m")) el.setAttribute("data-m",el.textContent);
+      el.textContent=el.getAttribute(S.who==="girl"?"data-f":"data-m");
+    });
+  }
+  function setMood(id,mood){ var p=$(id); p.classList.remove("listen","cheer"); if(mood) p.classList.add(mood); }
+
+  /* ---------- storybook scenery (drawn to the box, no image files) ---------- */
+  function sceneSVG(w,h){
+    var o=['<svg viewBox="0 0 '+w+' '+h+'" aria-hidden="true">'];
+    o.push('<ellipse cx="'+(w*0.18)+'" cy="'+(h*0.98)+'" rx="'+(w*0.42)+'" ry="'+(h*0.78)+'" style="fill:var(--pink-l)"/>');
+    o.push('<ellipse cx="'+(w*0.82)+'" cy="'+(h*1.0)+'" rx="'+(w*0.45)+'" ry="'+(h*0.7)+'" style="fill:var(--pink)"/>');
+    o.push('<ellipse cx="'+(w*0.5)+'" cy="'+(h*1.08)+'" rx="'+(w*0.38)+'" ry="'+(h*0.62)+'" style="fill:var(--pink-d);opacity:.55"/>');
+    var yb=h-44, r=22, step=38;
+    for(var x=-10;x<w+40;x+=step){ o.push('<circle cx="'+x+'" cy="'+yb+'" r="'+(r+4)+'" fill="#fff"/>'); }
+    for(var x2=-10;x2<w+40;x2+=step){ o.push('<circle cx="'+x2+'" cy="'+(yb+3)+'" r="'+r+'" style="fill:var(--lime)"/>'); }
+    o.push('<rect x="0" y="'+(yb+6)+'" width="'+w+'" height="'+(h-yb)+'" style="fill:var(--lime)"/>');
+    o.push('<rect x="0" y="'+(h-30)+'" width="'+w+'" height="30" style="fill:var(--lime-l)"/>');
+    for(var k=0;k<Math.floor(w/70);k++){ var fx=30+k*70+(k%2)*20; o.push('<circle cx="'+fx+'" cy="'+(h-16)+'" r="4" fill="#fff"/><circle cx="'+(fx+8)+'" cy="'+(h-12)+'" r="3" style="fill:var(--pink)"/>'); }
+    o.push('</svg>'); return o.join("");
+  }
+  function buildScenes(root){
+    Array.prototype.forEach.call((root||document).querySelectorAll(".scene"),function(el){
+      var w=Math.round(el.clientWidth), h=Math.round(el.clientHeight); if(!w||!h) return;
+      if(el.getAttribute("data-w")===w+"x"+h) return; el.setAttribute("data-w",w+"x"+h); el.innerHTML=sceneSVG(w,h);
+    });
+  }
+  function bushClump(cx,cy,sc){
+    var c=[[0,0,26],[30,4,22],[-28,6,20],[12,-16,18]], o='<svg class="bush" style="left:'+(cx-60*sc)+'px;top:'+(cy-50*sc)+'px;width:'+(120*sc)+'px;height:'+(80*sc)+'px" viewBox="-60 -50 120 80" aria-hidden="true">';
+    c.forEach(function(p){ o+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+(p[2]+4)+'" fill="#fff"/>'; });
+    c.forEach(function(p){ o+='<circle cx="'+p[0]+'" cy="'+(p[1]+2)+'" r="'+p[2]+'" style="fill:var(--lime)"/>'; });
+    return o+'</svg>';
+  }
+  function hillMound(left,cy,w){
+    return '<svg class="hill" style="left:'+left+'px;top:'+(cy-w*0.32)+'px;width:'+w+'px;height:'+(w*0.4)+'px" viewBox="-6 0 112 40" preserveAspectRatio="none" aria-hidden="true">'+
+      '<ellipse cx="50" cy="40" rx="52" ry="38" fill="#fff"/><ellipse cx="50" cy="41" rx="48" ry="34" style="fill:var(--pink-l)"/>'+
+      '<ellipse cx="66" cy="42" rx="30" ry="22" style="fill:var(--pink)"/></svg>';
+  }
+
+  /* ---------- screens ---------- */
+  var screens=["home","signup","pay","paid","maker","map","vintro","letter","game","duck","play"], cur=0;
+  function go(name){
+    screens.forEach(function(s){ $(s).hidden = s!==name; });
+    if(name==="map") renderMap();
+    if(name==="vintro"){ renderIntro(); renderAllFigs(); }
+    if(name==="maker") renderMaker();
+    if(name!=="game") stopGame();
+    if(name!=="duck") D.on=false;
+    if(name!=="play" && window.TG && TG.stop) TG.stop();
+    if(name==="signup"||name==="paid") renderAllFigs();
+    applyGender();
+    $(name).scrollTop=0;
+    buildScenes($(name));
+  }
+  Array.prototype.forEach.call(document.querySelectorAll("[data-go]"),function(b){ b.addEventListener("click",function(){ unlockAudio(); go(b.getAttribute("data-go")); }); });
+  function starCount(){ return Object.keys(S.progress).filter(function(k){ return S.progress[k]&&S.progress[k].star; }).length; }
+  function vStarCount(){ return Object.keys(S.progress).filter(function(k){ return S.progress[k]&&S.progress[k].vstar; }).length; }
+
+  /* ---------- home / demo sign-up / demo payment ---------- */
+  $("startBtn").addEventListener("click",function(){ unlockAudio(); go("map"); });
+  $("makeBtn").addEventListener("click",function(){ unlockAudio(); go(S.sub?"maker":"signup"); });
+  $("signupForm").addEventListener("submit",function(e){ e.preventDefault(); var c=$("suChild").value.trim(); if(c) S.name=c; go("pay"); });
+  $("payForm").addEventListener("submit",function(e){ e.preventDefault(); S.sub=true; save(); sfx.win(); go("paid"); });
+  $("toMaker").addEventListener("click",function(){ go("maker"); });
+  $("lockBtn").addEventListener("click",function(){ go("signup"); });
+
+  /* ---------- maker (dress-up) ---------- */
+  var tab="full";
+  function renderMaker(){
+    $("whoBoy").setAttribute("aria-pressed",String(S.who==="boy")); $("whoGirl").setAttribute("aria-pressed",String(S.who==="girl"));
+    renderFig("mkFig"); renderRack(); renderNames();
+  }
+  function renderRack(){
+    var w=WARDROBE[S.who], r=$("rack"); r.innerHTML="";
+    Array.prototype.forEach.call(document.querySelectorAll(".tabs [role=tab]"),function(t){ t.setAttribute("aria-selected",String(t.getAttribute("data-tab")===tab)); });
+    var none=document.createElement("button"); none.type="button"; none.className="item none"; none.textContent=tab==="full"?"بدون":"شيل";
+    none.setAttribute("aria-pressed",String(!S[tab]));
+    none.addEventListener("click",function(){ unlockAudio(); sfx.tap(); S[tab]=null; if(tab!=="full") S.full=null; renderMaker(); save(); });
+    r.appendChild(none);
+    (w[tab]||[]).filter(function(it){ return it.id!=="white"; }).forEach(function(it){
+      var b=document.createElement("button"); b.type="button"; b.className="item"; b.setAttribute("aria-label",it.name);
+      b.setAttribute("aria-pressed",String(S[tab]===it.id));
+      var im=document.createElement("img"); im.src=it.thumb; im.alt=it.name; im.loading="lazy"; b.appendChild(im);
+      b.addEventListener("click",function(){ unlockAudio(); sfx.tap(); if(tab==="full"){ S.full=it.id; S.top=null; S.bottom=null; } else { S.full=null; S[tab]=it.id; } save(); renderMaker(); setMood("mkFig","cheer"); setTimeout(function(){ setMood("mkFig",""); },700); });
+      r.appendChild(b);
+    });
+  }
+  function renderNames(){
+    var h=$("cName"); h.innerHTML="";
+    NAMES[S.who].forEach(function(n){ var b=document.createElement("button"); b.type="button"; b.className="chip"; b.textContent=n; b.setAttribute("aria-pressed",String(S.name===n));
+      b.addEventListener("click",function(){ unlockAudio(); sfx.tap(); S.name=n; $("nameIn").value=""; save(); renderNames(); }); h.appendChild(b); });
+    if(NAMES[S.who].indexOf(S.name)<0) $("nameIn").value=S.name||"";
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".tabs [role=tab]"),function(t){ t.addEventListener("click",function(){ tab=t.getAttribute("data-tab"); renderRack(); }); });
+  $("whoBoy").addEventListener("click",function(){ S.who="boy"; S.full=null; S.top=null; S.bottom=null; if(NAMES.girl.indexOf(S.name)>=0) S.name=""; renderMaker(); save(); });
+  $("whoGirl").addEventListener("click",function(){ S.who="girl"; S.full=null; S.top=null; S.bottom=null; if(NAMES.boy.indexOf(S.name)>=0) S.name=""; renderMaker(); save(); });
+  $("nameIn").addEventListener("input",function(){ var v=this.value.trim(); if(v){ S.name=v; Array.prototype.forEach.call($("cName").children,function(c){ c.setAttribute("aria-pressed","false"); }); save(); } });
+  $("goBtn").addEventListener("click",function(){ unlockAudio(); S.made=true; save(); sfx.ding(); renderAllFigs(); go("map"); });
+  $("editPet").addEventListener("click",function(){ go(S.sub?"maker":"signup"); });
+
+  /* ---------- lessons switch: الحروف / الحركات ---------- */
+  function setMode(m){
+    if(S.mode===m) return; S.mode=m; save(); sfx.tap();
+    if(m==="v"&&!S.vIntro){ go("vintro"); return; }
+    POINTS=null; renderMap();
+  }
+  $("modeL").addEventListener("click",function(){ unlockAudio(); setMode("l"); });
+  $("modeV").addEventListener("click",function(){ unlockAudio(); setMode("v"); });
+  function renderIntro(){
+    var ba=LETTERS[1], c=$("viCards"); c.innerHTML="";
+    $("viSay").textContent=T("هذي الحركات الثلاث. اضغط على كل وحدة واسمع صوتها","هذي الحركات الثلاث. اضغطي على كل وحدة واسمعي صوتها");
+    VOWELS.forEach(function(x){
+      var b=document.createElement("button"); b.type="button"; b.className="vi-card"; b.setAttribute("aria-label",x.name);
+      b.innerHTML=sylHTML(ba,x.k)+'<b style="color:'+x.col+'">'+x.name+'</b><small>'+x.tip[S.who==="girl"?1:0].replace(": ","<br>")+'</small><svg class="ico"><use href="#i-speaker"/></svg>';
+      b.addEventListener("click",function(){ unlockAudio(); speakSyl(ba,x.k); setMood("viFig","cheer"); setTimeout(function(){ setMood("viFig",""); },700); });
+      c.appendChild(b);
+    });
+  }
+  $("viGo").addEventListener("click",function(){ unlockAudio(); S.vIntro=true; S.mode="v"; save(); POINTS=null; go("map"); });
+
+  /* ---------- map ---------- */
+  var POINTS=null;
+  function buildRoad(){
+    var d="M200 150"; var x=200,y=150; var dirs=[1,-1]; var k=0;
+    for(var i=0;i<10;i++){ var nx=200+dirs[k%2]*115; k++; var ny=y+228; d+=" C "+x+" "+(y+114)+", "+nx+" "+(y+114)+", "+nx+" "+ny; x=nx; y=ny; }
+    ["roadEdge","roadPath","roadDash"].forEach(function(id){ $(id).setAttribute("d",d); });
+    var path=$("roadPath"), L=path.getTotalLength(); POINTS=[];
+    for(var j=0;j<28;j++){ var p=path.getPointAtLength(L*j/27); POINTS.push({x:p.x/400*100,y:p.y/2500*100}); }
+  }
+  function doneAt(i){ var L=LETTERS[i]; return isV()?vStar(L):!!(S.progress[L.id]&&S.progress[L.id].star); }
+  function currentIndex(){ for(var i=0;i<LETTERS.length;i++){ if(!doneAt(i)) return i; } return LETTERS.length-1; }
+  function renderMap(){
+    var t=$("trail"); t.style.height=Math.round(2500*Math.min(t.clientWidth||360,460)/400)+"px";
+    if(!POINTS) buildRoad();
+    Array.prototype.slice.call(t.querySelectorAll(".stop")).forEach(function(s){ s.remove(); });
+    var now=currentIndex();
+    LETTERS.forEach(function(L,i){
+      var b=document.createElement("button"); b.type="button"; b.className="stop"+(doneAt(i)?" done":"")+(i===now?" now":"");
+      b.style.left=POINTS[i].x+"%"; b.style.top=POINTS[i].y+"%";
+      var pr=S.progress[L.id]||{}, extra;
+      if(isV()){
+        var vv=vOf(L);
+        extra='<span class="vdots" aria-hidden="true">'+VOWELS.map(function(v){ return '<i class="'+v.k+(vv[v.k]?' on':'')+'"></i>'; }).join("")+'</span>'+(S.sub?'':'<svg class="ico lk"><use href="#i-lock"/></svg>')+(pr.vgame?'<svg class="ico gm"><use href="#i-game"/></svg>':'');
+      } else extra=(pr.game?'<svg class="ico gm"><use href="#i-game"/></svg>':'');
+      b.innerHTML='<span>'+L.ch+'</span><svg class="ico fill star"><use href="#i-star"/></svg>'+extra;
+      b.setAttribute("aria-label",(isV()?"حركات حرف ال":"حرف ال")+L.name);
+      b.addEventListener("click",function(){ unlockAudio(); sfx.tap(); openLetter(i); });
+      t.appendChild(b);
+    });
+    var w=$("walker"); w.style.left=POINTS[now].x+"%"; w.style.top=POINTS[now].y+"%";
+    Array.prototype.slice.call(t.querySelectorAll(".bush,.hill")).forEach(function(x){ x.remove(); });
+    var tw=t.clientWidth||360, th=t.clientHeight, html="";
+    for(var hy=470, hs=0; hy<th-80; hy+=600, hs++){ html+=hillMound(hs%2? tw-96 : -44, hy, 140); }
+    for(var by=260, side=0; by<th-80; by+=300, side++){ html+=bushClump(side%2? tw-34 : 34, by, .7); }
+    t.insertAdjacentHTML("beforeend",html);
+    $("mapStarsN").textContent=(isV()?vStarCount():starCount())+" من 28";
+    $("trail").classList.toggle("vmode",isV());
+    $("modeL").setAttribute("aria-selected",String(!isV())); $("modeV").setAttribute("aria-selected",String(isV()));
+    renderAllFigs();
+    setTimeout(function(){ var el=t.querySelector(".stop.now"); if(el&&el.scrollIntoView) el.scrollIntoView({block:"center"}); },50);
+  }
+
+  /* ---------- sounds (WebAudio, no files) ---------- */
+  var AC=null;
+  function unlockAudio(){ try{ if(!AC) AC=new (window.AudioContext||window.webkitAudioContext)(); if(AC.state==="suspended") AC.resume(); }catch(e){} }
+  function tone(f,t,dur,type,vol){ if(!AC) return; var o=AC.createOscillator(),g=AC.createGain(); o.type=type||"sine"; o.frequency.value=f; g.gain.value=0; o.connect(g); g.connect(AC.destination); var n=AC.currentTime+t; g.gain.linearRampToValueAtTime(vol||.18,n+.01); g.gain.exponentialRampToValueAtTime(.0001,n+dur); o.start(n); o.stop(n+dur+.02); }
+  var sfx={
+    pop:function(){ tone(880,0,.12,"triangle",.2); tone(1320,.05,.12,"triangle",.12); },
+    ding:function(){ tone(784,0,.25,"sine",.18); tone(1175,.12,.3,"sine",.14); },
+    no:function(){ tone(392,0,.12,"sine",.07); tone(330,.09,.16,"sine",.06); },
+    win:function(){ [523,659,784,1047].forEach(function(f,i){ tone(f,i*.13,.3,"triangle",.16); }); },
+    tap:function(){ tone(600,0,.06,"sine",.08); },
+    hop:function(){ sweep(380,820,.22,"sine",.16); },
+    plop:function(){ sweep(620,180,.16,"sine",.14); noise(.18,900,.08); },
+    quack:function(){ [0,.16].forEach(function(t){ sweep(560,380,.12,"sawtooth",.07,t,1300); }); }
+  };
+  function sweep(f1,f2,dur,type,vol,at,bp){ if(!AC) return; var o=AC.createOscillator(),g=AC.createGain(),n=AC.currentTime+(at||0); o.type=type; o.frequency.setValueAtTime(f1,n); o.frequency.exponentialRampToValueAtTime(f2,n+dur);
+    g.gain.setValueAtTime(0,n); g.gain.linearRampToValueAtTime(vol,n+.015); g.gain.exponentialRampToValueAtTime(.0001,n+dur);
+    if(bp){ var f=AC.createBiquadFilter(); f.type="bandpass"; f.frequency.value=bp; f.Q.value=3; o.connect(f); f.connect(g); } else o.connect(g);
+    g.connect(AC.destination); o.start(n); o.stop(n+dur+.02); }
+  function noise(dur,lp,vol){ if(!AC) return; var len=Math.floor(AC.sampleRate*dur), buf=AC.createBuffer(1,len,AC.sampleRate), d=buf.getChannelData(0);
+    for(var i=0;i<len;i++) d[i]=(Math.random()*2-1)*(1-i/len);
+    var s=AC.createBufferSource(), f=AC.createBiquadFilter(), g=AC.createGain(); s.buffer=buf; f.type="lowpass"; f.frequency.value=lp; g.gain.value=vol; s.connect(f); f.connect(g); g.connect(AC.destination); s.start(); }
+
+  /* ---------- letter voice ---------- */
+  function V(k){ for(var i=0;i<VOWELS.length;i++){ if(VOWELS[i].k===k) return VOWELS[i]; } return VOWELS[0]; }
+  function sylBase(L,k){ return L.ch==="أ"&&k==="k"?"إ":L.ch; }
+  function syl(L,k){ return sylBase(L,k)+V(k).mark; }
+  function sylHTML(L,k){ return '<span class="gl"><span class="gl-m" style="color:'+V(k).col+'">'+syl(L,k)+'</span><span class="gl-b" aria-hidden="true">'+sylBase(L,k)+'</span></span>'; }
+  function speakSyl(L,k,done){
+    if(AUDIO_BASE){
+      var a=new Audio(AUDIO_BASE+"v/"+L.id+"-"+k+".mp3");
+      a.onended=function(){ if(done) done(); }; a.onerror=function(){ tts(syl(L,k),done); };
+      a.play().catch(function(){ tts(syl(L,k),done); });
+    } else tts(syl(L,k),done);
+  }
+  function isV(){ return S.mode==="v"; }
+  function vOf(L){ var p=S.progress[L.id]; return (p&&p.v)||{}; }
+  function vStar(L){ return !!(S.progress[L.id]&&S.progress[L.id].vstar); }
+  var vk="f";
+  function speakCur(done){ var L=LETTERS[cur]; if(isV()) speakSyl(L,vk,done); else speakLetter(L,done); }
+  function speakLetter(L,done){
+    if(AUDIO_BASE){
+      var a=new Audio(AUDIO_BASE+"letters/"+L.id+".mp3");
+      a.onended=function(){ if(done) done(); }; a.onerror=function(){ tts(L.name,done); };
+      a.play().catch(function(){ tts(L.name,done); });
+    } else tts(L.name,done);
+  }
+  function tts(text,done){
+    try{
+      if(!("speechSynthesis" in window)){ if(done) done(); return; }
+      window.speechSynthesis.cancel();
+      var u=new SpeechSynthesisUtterance(text); u.lang="ar-SA"; u.rate=.68; u.pitch=1.05;
+      var vs=window.speechSynthesis.getVoices().filter(function(v){ return /^ar/i.test(v.lang); });
+      if(vs.length) u.voice=vs[0];
+      u.onend=function(){ if(done) done(); };
+      window.speechSynthesis.speak(u);
+    }catch(e){ if(done) done(); }
+  }
+
+  /* ---------- letter screen ---------- */
+  var recorder=null,chunks=[],recURL=null,recAudio=null;
+  function say(t){ $("petSay").textContent=t; }
+  function openLetter(i){
+    cur=i; var L=LETTERS[i];
+    if(isV()&&!S.sub){ go("signup"); return; }
+    $("lCount").textContent=(i+1)+" من 28";
+    $("lMsg").textContent=""; resetRec(); setMood("lFig",""); say(T("اسمع معي","اسمعي معي"));
+    var done=doneAt(i), hasGame=GAME_UNLOCKED.indexOf(i)>=0||isV();
+    $("nextRow").hidden=!done; $("gameBtn").hidden=!(hasGame&&S.sub); $("gameLock").hidden=!(hasGame&&!S.sub&&done);
+    $("lockTxt").textContent=isV()?"لعبة الحركات مع الباقة":"لعبة الحرف مع الباقة";
+    $("nextBtn").textContent=isV()?"الحرف التالي":"الحرف التالي";
+    $("vRow").hidden=!isV(); $("vHint").hidden=!isV(); $("lHint").hidden=isV();
+    if(isV()){
+      var vv=vOf(L); vk="f"; for(var q=0;q<VOWELS.length;q++){ if(!vv[VOWELS[q].k]){ vk=VOWELS[q].k; break; } }
+      $("lTitle").textContent="حركات ال"+L.name;
+      showVowel();
+    } else {
+      $("lGlyph").className="glyph"; $("lGlyph").textContent=L.ch; $("lName").textContent=L.name; $("lName").style.color="";
+      $("lTitle").textContent="حرف ال"+L.name;
+    }
+    renderFig("lFig"); go("letter");
+    setTimeout(function(){ speakCur(); },350);
+  }
+  /* vowel lesson: the big letter with the chosen vowel, and the three vowel chips */
+  function showVowel(){
+    var L=LETTERS[cur], v=V(vk), vv=vOf(L);
+    $("lGlyph").className="glyph v"; $("lGlyph").innerHTML=sylHTML(L,vk);
+    $("lName").textContent=v.name; $("lName").style.color=v.col;
+    $("vHint").textContent=v.tip[S.who==="girl"?1:0];
+    var r=$("vRow"); r.innerHTML="";
+    VOWELS.forEach(function(x){
+      var b=document.createElement("button"); b.type="button"; b.className="vchip"+(vv[x.k]?" done":"");
+      b.setAttribute("aria-pressed",String(x.k===vk)); b.setAttribute("aria-label",syl(L,x.k)+" "+x.name);
+      b.innerHTML=sylHTML(L,x.k)+'<small style="color:'+x.col+'">'+x.name+'</small><svg class="ico ok"><use href="#i-check"/></svg>';
+      b.addEventListener("click",function(){ unlockAudio(); sfx.tap(); vk=x.k; resetRec(); $("lMsg").textContent=""; showVowel(); speakSyl(L,vk); say(x.mouth[S.who==="girl"?1:0]); });
+      r.appendChild(b);
+    });
+  }
+  function resetRec(){
+    if(recorder&&recorder.state==="recording"){ try{recorder.stop();}catch(e){} }
+    recorder=null; chunks=[]; if(recURL){ try{URL.revokeObjectURL(recURL);}catch(e){} } recURL=null; recAudio=null;
+    $("recBtn").classList.remove("on"); $("recLbl").textContent=T("سجّل صوتي","سجّلي صوتي");
+    $("playBtn").disabled=true; $("bothBtn").disabled=true;
+  }
+  $("listenBtn").addEventListener("click",function(){ unlockAudio(); say(T("اسمع","اسمعي")); speakCur(); });
+  $("recBtn").addEventListener("click",function(){
+    unlockAudio();
+    if(recorder&&recorder.state==="recording"){ recorder.stop(); return; }
+    if(!navigator.mediaDevices||!window.MediaRecorder){ $("lMsg").textContent="التسجيل يشتغل لما ننزّل التطبيق على موقعه."; return; }
+    navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){
+      chunks=[]; recorder=new MediaRecorder(stream);
+      recorder.ondataavailable=function(e){ if(e.data.size) chunks.push(e.data); };
+      recorder.onstop=function(){
+        stream.getTracks().forEach(function(t){ t.stop(); });
+        var blob=new Blob(chunks,{type:recorder.mimeType||"audio/webm"});
+        if(recURL){ try{URL.revokeObjectURL(recURL);}catch(e){} }
+        recURL=URL.createObjectURL(blob); recAudio=new Audio(recURL);
+        $("recBtn").classList.remove("on"); $("recLbl").textContent=T("سجّل مرة ثانية","سجّلي مرة ثانية");
+        $("playBtn").disabled=false; $("bothBtn").disabled=false; $("lMsg").textContent=T("تم. اسمع صوتك وقارن.","تم. اسمعي صوتك وقارني.");
+        setMood("lFig",""); say("سمعتك!"); sfx.ding();
+      };
+      recorder.start();
+      $("recBtn").classList.add("on"); $("recLbl").textContent=T("أوقف","أوقفي"); $("lMsg").textContent=T("قل الحرف الحين…","قولي الحرف الحين…");
+      setMood("lFig","listen"); say("أنا أسمعك");
+      setTimeout(function(){ if(recorder&&recorder.state==="recording") recorder.stop(); },4000);
+    }).catch(function(){ $("lMsg").textContent="ما قدرنا نفتح المايك. التسجيل يشتغل لما ننزّل التطبيق على موقعه."; });
+  });
+  $("playBtn").addEventListener("click",function(){ if(recAudio){ recAudio.currentTime=0; recAudio.play(); say("هذا صوتك"); } });
+  $("bothBtn").addEventListener("click",function(){ say(T("الحرف، ثم أنت","الحرف، ثم أنتِ")); speakCur(function(){ if(recAudio){ setTimeout(function(){ recAudio.currentTime=0; recAudio.play(); },250); } }); });
+  $("okBtn").addEventListener("click",function(){
+    unlockAudio(); var L=LETTERS[cur];
+    if(isV()) return okVowel(L);
+    S.progress[L.id]=S.progress[L.id]||{}; S.progress[L.id].star=true; save();
+    sfx.win(); setMood("lFig","cheer"); say("نجمة لنا!");
+    cheer("أحسنت!");
+    $("lMsg").textContent="ممتاز! نجمة لك."; $("nextRow").hidden=false;
+    var hasGame=GAME_UNLOCKED.indexOf(cur)>=0; $("gameBtn").hidden=!(hasGame&&S.sub); $("gameLock").hidden=!(hasGame&&!S.sub);
+    setTimeout(function(){ setMood("lFig",""); },1700);
+  });
+  function okVowel(L){
+    var p=S.progress[L.id]=S.progress[L.id]||{}; p.v=p.v||{}; p.v[vk]=true;
+    var all=VOWELS.every(function(x){ return p.v[x.k]; }), first=all&&!p.vstar;
+    if(all) p.vstar=true;
+    save(); setMood("lFig","cheer"); setTimeout(function(){ setMood("lFig",""); },1500);
+    if(first){
+      sfx.win(); say("نجمة لنا!"); cheer("أحسنت!");
+      $("lMsg").textContent=T("عرفت الحركات الثلاث! نجمة لك.","عرفتِ الحركات الثلاث! نجمة لج.");
+      $("nextRow").hidden=false; $("gameBtn").hidden=!S.sub; $("gameLock").hidden=S.sub;
+      showVowel(); return;
+    }
+    sfx.ding(); say("صح!");
+    var nxt=null; for(var q=0;q<VOWELS.length;q++){ if(!p.v[VOWELS[q].k]){ nxt=VOWELS[q].k; break; } }
+    showVowel();
+    if(all){ $("nextRow").hidden=false; return; }
+    $("lMsg").textContent=T("ممتاز! الحين الحركة اللي بعدها.","ممتازة! الحين الحركة اللي بعدها.");
+    setTimeout(function(){ if($("letter").hidden||cur!==LETTERS.indexOf(L)) return; vk=nxt; resetRec(); showVowel(); speakSyl(L,vk); say(V(vk).mouth[S.who==="girl"?1:0]); },1300);
+  }
+  function cheer(word){
+    var w=document.createElement("div"); w.className="cheerwrap"; w.setAttribute("aria-live","polite");
+    var h='<div class="rays"></div><div class="disc"></div><div class="fig"><div class="anim">';
+    layers().forEach(function(src){ h+='<img src="'+src+'" alt="">'; });
+    h+='</div></div><div class="word pop sun">'+word+'</div>';
+    [[-150,-120],[150,-140],[-140,110],[140,100],[0,-190],[0,170]].forEach(function(d){ h+='<svg class="ico fill" style="--dx:'+d[0]+'px;--dy:'+d[1]+'px"><use href="#i-star"/></svg>'; });
+    w.innerHTML=h; document.body.appendChild(w); setTimeout(function(){ w.remove(); },1950);
+  }
+  $("againBtn").addEventListener("click",function(){ unlockAudio(); $("lMsg").textContent=T("مرة ثانية، اسمع وقلها.","مرة ثانية، اسمعي وقوليها."); say("نعيدها سوا"); speakCur(); });
+  $("nextBtn").addEventListener("click",function(){ if(cur<LETTERS.length-1) openLetter(cur+1); else go("map"); });
+  $("gameBtn").addEventListener("click",function(){ unlockAudio(); openGame(cur); });
+  function openGame(i){
+    if(isV()){ var vb=$("gameBtn"); vb.disabled=true; return loadGames(function(ok){ vb.disabled=false; if(!ok||!TG.start(i,"vowel")) $("lMsg").textContent="ما قدرنا نفتح اللعبة، جرّب مرة ثانية."; }); }
+    if(i===0) return startGame(0);
+    if(i===1) return startDuck();
+    var b=$("gameBtn"); b.disabled=true;
+    loadGames(function(ok){ b.disabled=false; if(!ok||!TG.start(i)){ $("lMsg").textContent="ما قدرنا نفتح اللعبة، جرّب مرة ثانية."; } });
+  }
+  /* games.js is fetched the first time a game opens, then stays cached */
+  var gamesWait=null;
+  function loadGames(cb){
+    if(window.TG&&TG.ready) return cb(true);
+    if(gamesWait){ gamesWait.push(cb); return; }
+    gamesWait=[cb];
+    var s=document.createElement("script"); s.src="games.js?v=1";
+    s.onload=function(){ TG.init(gameApi); TG.ready=true; var w=gamesWait; gamesWait=null; w.forEach(function(f){ f(true); }); };
+    s.onerror=function(){ var w=gamesWait; gamesWait=null; s.remove(); w.forEach(function(f){ f(false); }); };
+    document.head.appendChild(s);
+  }
+  var gameApi={
+    LETTERS:LETTERS, T:T, sfx:sfx, tone:tone, sweep:sweep, noise:noise,
+    VOWELS:VOWELS, syl:syl, sylHTML:sylHTML, speakSyl:function(L,k,d){ speakSyl(L,k,d); }, S:function(){ return S; }, save:save,
+    speakLetter:function(L){ speakLetter(L); }, tts:function(t){ tts(t); }, unlock:unlockAudio, go:go, renderFig:renderFig,
+    friendName:function(){ return S.name||T("صديقك","صديقتك"); },
+    figHTML:function(){ return '<div class="anim">'+layers().map(function(s){ return '<img src="'+s+'" alt="">'; }).join("")+'</div>'; },
+    onWin:function(i){ var L=LETTERS[i]; S.progress[L.id]=S.progress[L.id]||{}; S.progress[L.id].star=true; S.progress[L.id].game=true; save(); }
+  };
+  $("pGoal").addEventListener("click",function(){ unlockAudio(); var c=window.TG&&TG.ctx; if(c&&c.def&&c.def.replay) c.def.replay(c); else speakLetter(LETTERS[cur]); });
+  $("pAgain").addEventListener("click",function(){ unlockAudio(); TG.again(); });
+  $("pMap").addEventListener("click",function(){ go("map"); });
+
+  /* ---------- game: catch the letter ---------- */
+  var G={on:false,raf:0,last:0,spawnT:0,orbs:[],score:0,need:5,target:0};
+  function startGame(i){
+    G.target=i; G.score=0; G.on=true; G.orbs.forEach(function(b){ b.el.remove(); }); G.orbs=[]; G.spawnT=0; G.last=0;
+    $("gTarget").textContent=LETTERS[i].ch; $("gScore").textContent="0 من "+G.need; $("win").hidden=true; $("gMsg").style.opacity=1;
+    renderFig("gFig"); setMood("gFig",""); go("game"); speakLetter(LETTERS[i]);
+    G.raf=requestAnimationFrame(frame);
+  }
+  function stopGame(){ G.on=false; if(G.raf) cancelAnimationFrame(G.raf); G.raf=0; }
+  function spawn(){
+    var arena=$("arena"), W=arena.clientWidth, H=arena.clientHeight;
+    var isT=Math.random()<.45;
+    var idx=isT?G.target:(function(){ var j; do{ j=Math.floor(Math.random()*LETTERS.length); }while(j===G.target); return j; })();
+    var el=document.createElement("div"); el.className="orb"; el.textContent=LETTERS[idx].ch;
+    /* orbs appear above the companion's head and float up, so they never cover the friend */
+    var b={el:el,x:18+Math.random()*Math.max(40,W-120),y:Math.max(120,H-260),vy:45+Math.random()*30,sway:(Math.random()*2-1)*18,ph:Math.random()*6,idx:idx,dead:false};
+    el.addEventListener("pointerdown",function(ev){ ev.preventDefault(); hit(b); });
+    arena.appendChild(el); G.orbs.push(b);
+  }
+  function hit(b){
+    if(b.dead||!G.on) return;
+    if(b.idx===G.target){
+      b.dead=true; b.el.classList.add("pop"); sfx.pop(); G.score++; $("gScore").textContent=G.score+" من "+G.need; $("gMsg").style.opacity=0;
+      setMood("gFig","cheer"); setTimeout(function(){ if(G.on) setMood("gFig",""); },900);
+      setTimeout(function(){ b.el.remove(); },300);
+      if(G.score>=G.need){ winGame(); }
+    } else { b.el.classList.remove("no"); void b.el.offsetWidth; b.el.classList.add("no"); sfx.no(); }
+  }
+  function winGame(){
+    G.on=false; var L=LETTERS[G.target];
+    S.progress[L.id]=S.progress[L.id]||{}; S.progress[L.id].star=true; S.progress[L.id].game=true; save();
+    $("winText").textContent="صدتوا حرف ال"+L.name+" خمس مرات، "+T("أنت و"+(S.name||"صديقك"),"أنتِ و"+(S.name||"صديقتك"));
+    $("win").hidden=false; renderFig("wFig"); sfx.win();
+    setTimeout(function(){ speakLetter(L); },700);
+  }
+  function frame(ts){
+    if(!G.on) return;
+    if(!G.last) G.last=ts; var dt=Math.min(.05,(ts-G.last)/1000); G.last=ts;
+    G.spawnT-=dt; if(G.spawnT<=0 && G.orbs.filter(function(b){ return !b.dead; }).length<7){ spawn(); G.spawnT=.9; }
+    G.orbs.forEach(function(b){
+      if(b.dead) return;
+      b.y-=b.vy*dt; b.ph+=dt*2;
+      b.el.style.transform="translate("+(b.x+Math.sin(b.ph)*b.sway)+"px,"+b.y+"px)";
+      if(b.y<-90){ b.dead=true; b.el.remove(); }
+    });
+    G.orbs=G.orbs.filter(function(b){ return !b.dead; });
+    G.raf=requestAnimationFrame(frame);
+  }
+  $("againGame").addEventListener("click",function(){ startGame(G.target); });
+  $("toMap").addEventListener("click",function(){ go("map"); });
+
+  /* ---------- game ب: the duck crosses the pond ----------
+     Five rows of three lily pads; one carries ب, the others carry its look-alikes (ت ث ن ي),
+     so the child learns the letter by its one dot underneath. Two misses make the right pad glow. */
+  var D={on:false,r:0,rows:[],miss:0,busy:false,gap:150,y0:0,W:0,duck:null,say:null};
+  var DUCK_TARGET="ب", DUCK_ALIKE=["ت","ث","ن","ي"], DUCK_ROWS=5;
+  function nameOf(ch){ for(var i=0;i<LETTERS.length;i++){ if(LETTERS[i].ch===ch) return LETTERS[i].name; } return ch; }
+  function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)), t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+  function shoreSVG(w,h){
+    var o='<svg class="near" viewBox="0 0 '+w+' '+h+'" style="display:block;height:'+h+'px;width:100%" aria-hidden="true">';
+    for(var x=-10;x<w+40;x+=36){ o+='<circle cx="'+x+'" cy="22" r="22" fill="#fff"/>'; }
+    for(var x2=-10;x2<w+40;x2+=36){ o+='<circle cx="'+x2+'" cy="26" r="18" style="fill:var(--lime)"/>'; }
+    return o+'<rect x="0" y="26" width="'+w+'" height="420" style="fill:var(--lime)"/><rect x="0" y="52" width="'+w+'" height="400" style="fill:var(--lime-l)"/></svg>';
+  }
+  function startDuck(){
+    go("duck"); D.on=true; D.r=0; D.miss=0; D.busy=false; $("dWin").hidden=true; $("dwDuck").src=DUCK_SRC;
+    var pond=$("pond"), world=$("pondWorld"), W=pond.clientWidth, H=pond.clientHeight;
+    D.W=W; D.gap=Math.max(118,Math.min(165,(H-150)/3.4)); D.y0=H-96;
+    var g=D.gap, y0=D.y0, html="";
+    var farTop=y0-(DUCK_ROWS+1)*g-120;
+    html+='<div class="scene far" style="top:'+farTop+'px"></div>';
+    html+='<div class="fig friend" id="dFriend" style="left:'+(W*0.72-58)+'px;top:'+(farTop+170-128)+'px"></div>';
+    html+='<div style="position:absolute;left:0;right:0;top:'+(y0-22)+'px">'+shoreSVG(W,H-y0+22)+'</div>';
+    D.rows=[];
+    for(var r=1;r<=DUCK_ROWS;r++){
+      var alike=shuffle(DUCK_ALIKE.slice()).slice(0,2), letters=shuffle([DUCK_TARGET,alike[0],alike[1]]), row=[];
+      [0.2,0.5,0.8].forEach(function(px,c){
+        var x=Math.round(W*px+(Math.random()*16-8)), y=Math.round(y0-r*g+(Math.random()*14-7));
+        row.push({x:x,y:y,ch:letters[c],ok:letters[c]===DUCK_TARGET});
+        html+='<button type="button" class="pad'+(r>1?' later':'')+'" data-r="'+r+'" data-c="'+c+'" style="left:'+x+'px;top:'+y+'px" aria-label="حرف ال'+nameOf(letters[c])+'"><b>'+letters[c]+'</b></button>';
+      });
+      D.rows.push(row);
+    }
+    html+='<div class="ducky" id="ducky"><img src="'+DUCK_SRC+'" alt="البطة"></div><div class="d-say" id="dSay" style="opacity:0"></div>';
+    world.innerHTML=html; world.style.transition="none"; world.style.transform="translateY(0)"; void world.offsetWidth; world.style.transition="";
+    buildScenes(world); renderFig("dFriend");
+    D.duck=$("ducky"); D.say=$("dSay"); placeDuck(W/2,y0-6);
+    Array.prototype.forEach.call(world.querySelectorAll(".pad"),function(p){ p.addEventListener("click",function(){ tapPad(p); }); });
+    $("dScore").textContent="0 من "+DUCK_ROWS;
+    setTimeout(function(){ sfx.quack(); duckSay(T("ساعدني أعبر البركة!","ساعديني أعبر البركة!")); speakLetter(LETTERS[1]); },350);
+  }
+  function placeDuck(x,y){ D.dx=x; D.dy=y; D.duck.style.transform="translate("+(x-56)+"px,"+(y-100)+"px)"; }
+  function duckSay(t){ D.say.textContent=t; D.say.style.left=D.dx+"px"; D.say.style.top=(D.dy-104)+"px"; D.say.style.opacity=1; clearTimeout(D.sayT); D.sayT=setTimeout(function(){ D.say.style.opacity=0; },1800); }
+  function hopTo(x,y,done){
+    var from="translate("+(D.dx-56)+"px,"+(D.dy-100)+"px)", to="translate("+(x-56)+"px,"+(y-100)+"px)";
+    var mid="translate("+((D.dx+x)/2-56)+"px,"+(Math.min(D.dy,y)-170)+"px) scale(1.06,.96)";
+    sfx.hop();
+    if(D.duck.animate){ var a=D.duck.animate([{transform:from},{transform:mid,offset:.5},{transform:to+" scale(1.08,.9)",offset:.85},{transform:to}],{duration:560,easing:"ease-in-out"}); a.onfinish=function(){ placeDuck(x,y); done(); }; }
+    else { placeDuck(x,y); done(); }
+  }
+  function ripple(x,y){ var e=document.createElement("div"); e.className="ripple"; e.style.left=x+"px"; e.style.top=(y+8)+"px"; $("pondWorld").appendChild(e); setTimeout(function(){ e.remove(); },820); }
+  function camera(){ $("pondWorld").style.transform="translateY("+(Math.min(D.r,3)*D.gap)+"px)"; }
+  function tapPad(p){
+    if(!D.on||D.busy) return; unlockAudio();
+    var r=+p.getAttribute("data-r"), c=+p.getAttribute("data-c"); if(r!==D.r+1) return;
+    var cell=D.rows[r-1][c];
+    if(!cell.ok){
+      p.classList.remove("no"); void p.offsetWidth; p.classList.add("no"); sfx.no(); tts(nameOf(cell.ch));
+      duckSay("هذي "+cell.ch+"، وين ب؟"); D.miss++;
+      if(D.miss>=2){ var okc=D.rows[r-1].filter(function(z){ return z.ok; })[0], idx=D.rows[r-1].indexOf(okc);
+        var hp=$("pondWorld").querySelector('.pad[data-r="'+r+'"][data-c="'+idx+'"]'); if(hp) hp.classList.add("hint"); }
+      return;
+    }
+    D.busy=true; D.miss=0;
+    hopTo(cell.x,cell.y-6,function(){
+      sfx.plop(); ripple(cell.x,cell.y); p.classList.remove("hint"); p.classList.add("under");
+      Array.prototype.forEach.call($("pondWorld").querySelectorAll('.pad[data-r="'+r+'"]'),function(o){ if(o!==p) o.classList.add("gone"); });
+      Array.prototype.forEach.call($("pondWorld").querySelectorAll('.pad[data-r="'+(r+1)+'"]'),function(o){ o.classList.remove("later"); });
+      D.r=r; $("dScore").textContent=r+" من "+DUCK_ROWS; camera();
+      if(r%2===1) sfx.quack();
+      duckSay(["باء!","أحسنت!","كمان!","قربنا!"][(r-1)%4].replace("أحسنت!",T("أحسنت!","أحسنتِ!")));
+      if(r>=DUCK_ROWS){ setTimeout(finishDuck,650); } else D.busy=false;
+    });
+  }
+  function finishDuck(){
+    var landX=D.W*0.42, landY=D.y0-(DUCK_ROWS+1)*D.gap+30, H=$("pond").clientHeight;
+    /* bring the far shore and the waiting friend fully into view before the last hop */
+    $("pondWorld").style.transform="translateY("+Math.round(H*0.5-landY)+"px)";
+    setTimeout(function(){ hopTo(landX,landY,function(){
+      D.on=false; sfx.quack(); setMood("dFriend","cheer");
+      var L=LETTERS[1]; S.progress[L.id]=S.progress[L.id]||{}; S.progress[L.id].star=true; S.progress[L.id].game=true; save();
+      setTimeout(function(){
+        renderFig("dwFig"); $("dWin").hidden=false; sfx.win(); speakLetter(L);
+        $("dWinText").textContent=T("عرفت الـ ب من بين الحروف اللي تشبهها، أنت و","عرفتِ الـ ب من بين الحروف اللي تشبهها، أنتِ و")+(S.name||T("صديقك","صديقتك"));
+      },900);
+    }); },650);
+  }
+  $("dGoal").addEventListener("click",function(){ unlockAudio(); speakLetter(LETTERS[1]); });
+  $("duckAgain").addEventListener("click",function(){ startDuck(); });
+  $("duckMap").addEventListener("click",function(){ go("map"); });
+
+  if("speechSynthesis" in window){ window.speechSynthesis.getVoices(); }
+  window.addEventListener("resize",function(){ buildScenes(); if(!$("map").hidden){ POINTS=null; renderMap(); } });
+  renderFig("homeFig"); $("topName").textContent=S.name||T("صديقي","صديقتي");
+  go("home");
+  /* installable web app: offline cache when hosted on its own site (not inside previews) */
+  try{ if("serviceWorker" in navigator && location.protocol==="https:" && !/claude\.ai|claudeusercontent/.test(location.host)){ navigator.serviceWorker.register("sw.js").catch(function(){}); } }catch(e){}
+})();
+</script>
+
+</body>
+</html>
